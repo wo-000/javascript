@@ -11,22 +11,40 @@
 </head>
 <body>
     <div id="app">
-      
+        <input type="text" name="" id="" v-model="msg">
+        <my-component :message="msg"></my-component>
+        <my-component2 :width="100"></my-component2>
+       <!-- <my-component></my-component>
+      <my-component></my-component> -->
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script>
-        var app = new Vue({
-            el : '#app',
-            data : {
-             
-            },
-            computed : {
-               
-            },
-            methods: {
-              
+        Vue.component('my-component',{
+            props:['message'],
+            template:'<div>{{message}}</div>',
+           
+        })
+
+        Vue.component('my-component2',{
+            props:['width'],
+            template:'<div :style="style">width</div>',
+            computed: {
+                style:function(){
+                    return {
+                        width: this.width + "px",
+                        color:"blue"
+                    }
+                }
             },
         })
+
+        var app = new Vue({
+            el : '#app',
+            data:{
+                msg:''
+            }
+        })
+        
     </script>
 </body>
 </html>
