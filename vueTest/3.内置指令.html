@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>内置指令</title>
+</head>
+<body>
+
+    <div id="app">
+       <template v-if="type=='name'">
+            <label for="">用户名：</label>
+            <input type="text" placeholder="用户名" key="key-name">
+       </template>
+       <template v-else>
+            <label for="">邮箱</label>
+            <input type="text" placeholder="邮箱" key="key-email">
+        </template>
+        <button @click="handleToggleClick">切换类型</button>
+
+        <ul>
+            <template v-for="book in books">
+                <li>书名：{{book.name}} ：：作者：{{book.author}}</li>
+            </template>  
+        </ul>
+
+
+        <ul>
+            <template v-for="book in fliterBooks">
+                <li>书名：{{book.name}} ：：作者：{{book.author}}</li>
+            </template>  
+        </ul>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        var app = new Vue({
+            el : '#app',
+            data : {
+                type:'name',
+                books:[
+                    {
+                        name:"aaa",
+                        author:"bbb"
+                    },
+                    {
+                        name:"ccc",
+                        author:"ddd"
+                    }
+                ]
+            },
+            computed : {
+               fliterBooks:function(){
+                   return this.books.filter(function(book){
+                        return book.name.match(/aaa/);
+                   })
+               }
+            },
+            methods: {
+                handleToggleClick:function(){
+                    this.type = this.type === 'name' ? 'email' : 'name'
+                }
+            },
+        })
+
+        app.books.push({
+            name:"eee",
+            author:"fff"
+        })
+        // app.books.splice(1)
+    </script>
+</body>
+</html>

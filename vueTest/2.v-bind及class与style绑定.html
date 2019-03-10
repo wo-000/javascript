@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>v-bind及class与style绑定</title>
+</head>
+<body>
+
+    <div id="app">
+      <a v-bind:href="url">百度</a>
+      <img v-bind:src="imgUrl" alt="">
+      <p class="aaa" :class="{'active':active,'success':success}"></p>
+      <h1 :class="classes"></h1>
+      <h6 :style="styles">bbb</h6>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        var app = new Vue({
+            el : '#app',
+            data : {
+               url : "https://www.baidu.com",
+               imgUrl : "https://www.baidu.com/img",
+               active: true,
+               success:true,
+               size: 'large',
+               disabled: true,
+               styles:{
+                   color:"blue",
+                   fontSize:"20px"
+               }
+            },
+            computed : {
+               classes:function(){
+                    return [
+                        'btn',
+                            {
+                                ['btn-'+this.size]:this.size!=='',
+                                ['btn-disabled']:this.disabled
+                            }
+                    ]
+               }
+            },
+            methods: {
+               
+            },
+        })
+    </script>
+</body>
+</html>

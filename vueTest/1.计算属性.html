@@ -9,7 +9,12 @@
 <body>
 
     <div id="app">
-       <p>{{reversedText}}</p> 
+       <p>{{reversedText1}}</p> 
+       <p>{{reversedText()}}</p> 
+       <p>
+            {{now1}} <br>
+            {{now()}}
+        </p>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -17,13 +22,24 @@
         var app = new Vue({
             el : '#app',
             data : {
-                text : '123,456'
+                text : '123,456',
             },
             computed : {
-                reversedText : function(){
+                reversedText1 : function(){
                    return this.text.split(',').reverse().join(',');
+                },
+                now1 : function(){
+                    return Date.now();
                 }
-            }
+            },
+            methods: {
+                reversedText : function(){
+                    return this.text.split(',').reverse().join(',')
+                },
+                now : function(){
+                    return Date.now();
+                }
+            },
         })
     </script>
 </body>
