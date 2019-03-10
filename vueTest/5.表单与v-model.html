@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>表单与v-model</title>
+    <style>
+      
+    </style>
+</head>
+<body>
+    <div id="app" v-cloak>
+       <input type="text" v-model="msg">
+       <p>{{msg}}</p>
+       <input type="radio" name="" id="" v-model="picked" value="aaa">aaa
+       <input type="radio" name="" id="" v-model="picked" value="bbb">bbb
+       <input type="radio" name="" id="" v-model="picked" value="ccc">ccc
+       <hr>
+       <input type="checkbox" name="" id="" v-model="checked">
+       <hr>
+       <input type="checkbox" name="" v-model="isChecked" value="html" id="">html
+       <input type="checkbox" name="" v-model="isChecked" value="css" id="">css
+       <input type="checkbox" name="" v-model="isChecked" value="js" id="">js
+       <hr>
+        <select name="" id="" v-model="select">
+            <option value="">html</option>
+            <option value="">css</option>
+            <option value="js">js</option>
+        </select>
+        <hr>
+        <select name="" id="" v-model="selected" multiple>
+                <option value="html">html</option>
+                <option value="">css</option>
+                <option value="js">js</option>
+            </select>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        var app = new Vue({
+            el : '#app',
+            data : {
+               msg:'',
+               picked:"bbb",
+               checked:false,
+               isChecked:['js','html'],
+               select:'js',
+               selected:['js','html']
+            },
+            computed : {
+               
+            },
+            methods: {
+              
+            },
+        })
+    </script>
+</body>
+</html>
