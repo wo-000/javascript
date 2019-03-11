@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>组件</title>
+</head>
+<body>
+    <div id="app">
+        <component :is="active"></component>
+        <button @click="changeView('A')">A</button>
+        <button @click="changeView('B')">B</button>
+        <button @click="changeView('C')">C</button>
+
+        <component :is="aa"></component>
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        var home={
+            template:'<div>welcome Home</div>'
+        }
+
+        var app= new Vue({
+            el:'#app',
+            components:{
+                comA:{
+                    template:'<div>A</div>'
+                },
+                comB:{
+                    template:'<div>B</div>'
+                },
+                comC:{
+                    template:'<div>C</div>'
+                }
+            },
+            data:{
+                active:'comA',
+                aa:home
+            },
+            methods: {
+                changeView(active){
+                   this.active='com'+active 
+                }
+            },
+        })
+    </script>
+</body>
+</html>

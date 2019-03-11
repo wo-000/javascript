@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>组件练习</title>
+</head>
+<body>
+    <div id="app">
+
+        <input-number v-model="value" :max="20" :min="0" :step=2></input-number>
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        Vue.component('input-number',{
+            template:`
+                <div>
+                    <input type="text" :value="currentValue" @change="changeHandle" @keyup.up="addHandle" @keyup.down="reduceHandle">
+                    <button :disabled="currentValue<=min" @click="reduceHandle">-</button>
+                    <button :disabled="currentValue>=max" @click="addHandle">+</button>
+                </div>
+            `,
+            props:{
+                max:{
+                    type:Number,
+                    default:Infinity
+                },
+                min:{
+                    type:Number,
+                    default:-Infinity
+                },
+                value:{
+                    type:Number,
+                    default:0
+                },
+                step:{
+                    type:Number,
+                    default:1
+                }
+            },
+            data(){
+                return {
+                    currentValue:this.value
+                }
+            },
+            watch: {
+                currentValue:function(val){
+                    this.$emit('input',val);
+                    this.$emit('on-change',val)
+                },
+                value:function(val){
+                    this.updateValue(val);
+                }
+            },
+            methods: {
+                reduceHandle(){
+                    if(this.currentValue<=this.min) return;
+                    this.currentValue-=this.step;
+                },
+                addHandle(){
+                    if(this.currentValue>=this.max) return;
+                    this.currentValue+=this.step;
+                },
+                updateValue(val){
+                    if(val>this.max) val=this.max;
+                    if(val<this.min) val=this.min;
+                    this.currentValue=val;
+                },
+                changeHandle(e){
+                    var val=e.target.value.trim();
+                   
+                    var max=this.max;
+                    var min=this.min;
+                    val=Number(val);
+                    if(val>max){
+                        this.currentValue=max
+                        console.log(this.currentValue)
+                    }else if(val<min){
+                        this.currentValue=min;
+                    }else{
+                        e.target.value=this.currentValue;
+                    }
+                }
+            },
+            mounted() {
+                this.updateValue(this.value)
+            },
+        })
+
+        var app=new Vue({
+            el:'#app',
+            data:{
+                value:10
+            }
+        })
+
+    </script>
+</body>
+</html>

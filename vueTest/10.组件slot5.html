@@ -5,15 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>组件solt</title>
-    <style>
-      
-    </style>
 </head>
 <body>
     <div id="app">
+        <child-component>
+            <p>分发内容</p>
+            <p>更多分发内容</p>
+
+            <hr>
+
+            <h2 class="aa" slot="header">标题</h2>
+            <div slot="footer">底部</div>
+        </child-component>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script>
+        Vue.component('child-component',{
+            template:`
+            <div class="con">
+                <div>
+                    <slot>
+                        <p>如果父组件没有内容，默认我将显示</p>
+                    </slot>
+                </div>
+
+                <div class="header">
+                    <slot name="header"></slot>
+                </div>
+
+
+                <div>
+                    <slot name="footer"></slot>
+                </div>
+
+            </div>
+            `,
+            data(){
+                return {
+
+                }
+            }
+        })
+
+        var app= new Vue({
+            el:'#app'
+        })
     </script>
 </body>
 </html>
