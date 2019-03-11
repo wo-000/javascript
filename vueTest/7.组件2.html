@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>组件</title>
+    <style>
+      
+    </style>
+</head>
+<body>
+    <div id="app">
+        <p>{{total}}</p>
+        <my-component @add="getHandle" @reduce="getHandle"></my-component>
+        <hr>
+        <p>{{total2}}</p>
+        <my-component2 v-model="total2"></my-component2>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        Vue.component('my-component',{
+            template:`
+                <div>
+                    <button @click="addHandle">+1</button>
+                    <button @click="reduceHandle">-1</button>
+                </div>
+            `,
+            data(){
+                return {
+                    count:0
+                }
+            },
+            methods:{
+                addHandle(){
+                    this.count++;
+                    this.$emit('add',this.count)
+                },
+                reduceHandle(){
+                    this.count--;
+                    this.$emit('reduce',this.count)
+                }
+            }
+        })
+
+        Vue.component('my-component2',{
+            template:`
+                <button @click="handleClick">+1</button>
+            `,
+            data(){
+                return {
+                    count:0
+                }
+            },
+            methods:{
+                handleClick(){
+                    this.count++;
+                    this.$emit('input',this.count)
+                }
+            }
+
+        })
+
+        var app = new Vue({
+            el : '#app',
+            data:{
+                total:0,
+                total2:0
+            },
+            methods:{
+                getHandle:function(total){
+                    this.total=total
+                },
+                getSumHandle(total){
+                    this.total2=total
+                }
+            }
+        })
+        
+    </script>
+</body>
+</html>
