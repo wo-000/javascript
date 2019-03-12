@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>render函数</title>
+   
+</head>
+<body>
+    <div id="app">
+        <ele :list="list">
+
+        </ele>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        Vue.component('ele',{
+            render:function(creatElement){
+                var nodes=[];
+                for(var i=0;i<this.list.length;i++){
+                    nodes.push(creatElement('p',this.list[i]))
+                }
+                return creatElement('div',nodes)
+            },
+            props:{
+                list:{
+                    type:Array
+                }
+            }
+        })
+
+        var app=new Vue({
+            el:'#app',
+            data:{
+                list:[
+                    'aaa','bbb','ccc'
+                ]
+            }
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>render表格排序效果</title>
+    <style>
+        [v-cloak]{
+            display: none;
+        }
+        table{
+            width: 100%;
+            margin-bottom: 24px;
+            border-collapse: collapse;
+            border-spacing: 0;
+            empty-cells: show;
+            border:1px solid #e9e9e9;
+        }
+        table th{
+            background: #f7f7f7;
+            color: #5c6b77;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        table td,table th{
+            padding:8px 16px;
+            border: 1px solid #e9e9e9;
+            text-align: left; 
+        }
+        table td a{
+            display: inline-block;
+            padding: 0 4px;
+            cursor: pointer;
+        }
+        table th a.on{
+            color: #39f;
+        }
+        table th a:hover{
+            color: #39f;
+        }
+    </style>
+</head>
+<body>
+    <div id="app" v-cloak>
+        <v-table :data="data" :columns="columns"></v-table>
+        <button @click="handleAddData">添加数据</button>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        Vue.component('vTable',{
+            props:{
+                columns:{
+                    type:Array,
+                    default:function(){
+                        return [];
+                    }
+                },
+                data:{
+                    type:Array,
+                    default:function(){
+                        return [];
+                    }
+                }
+            },
+            data(){
+                return {
+                    currentColumns:[],
+                    currentData:[]
+                }
+            },
+            render(h) {
+                var _this=this;
+                var ths=[];
+                this.currentColumns.forEach(function(col,index){
+                    if(col.sortable){
+                        ths.push(h('th',[
+                            h('span',col.title),
+                            h('a',{
+                                class:{
+                                    on:col._sortType==='asc'
+                                },
+                                on:{
+                                    click:function(){
+                                        _this.handleSortByAsc(index)
+                                    }
+                                }
+                            },'↑'),
+                            h('a',{
+                                class:{
+                                    on:col._sortType==='desc'
+                                },
+                                on:{
+                                    click:function(){
+                                        _this.handleSortByDesc(index)
+                                    }
+                                }
+                            },'↓')
+                        ]))
+                    }else{
+                        ths.push(h('th',col.title))
+                    }
+                });
+                var trs=[];
+                this.currentData.forEach(function(row){
+                    var tds=[];
+                    _this.currentColumns.forEach(function(cell){
+                        tds.push(h('td',row[cell.key]))
+                    });
+                    trs.push(h('tr',tds))
+                });
+
+                return h('table',[
+                    h('thead',[
+                        h('tr',ths)
+                    ]),
+                    h('tbody',trs)
+                ])
+
+            },
+            methods:{
+                makeColumns:function(){
+                    this.currentColumns=this.columns.map(function(col,index){
+                        col._sortType='normal';
+                        col._index=index;
+                        return col;
+                    })
+                },
+                makeData:function(){
+                    this.currentData=this.data.map(function(row,index){
+                        row._index=index;
+                        return row
+                    })
+                },
+                handleSortByAsc:function(index){
+                    var key=this.currentColumns[index].key;
+                    this.currentColumns.forEach(function(col){
+                        col._sortType='normal'
+                    })
+                    this.currentColumns[index]._sortType='asc';
+                    this.currentData.sort(function(a,b){
+                        return a[key]>b[key]?1:-1;
+                    })
+                },
+                handleSortByDesc:function(index){
+                    var key=this.currentColumns[index].key;
+                    this.currentColumns.forEach(function(col){
+                        col._sortType='normal'
+                    })
+                    this.currentColumns[index]._sortType='desc'
+                    this.currentData.sort(function(a,b){
+                        return a[key]<b[key]?1:-1;
+                    })
+                }
+            },
+            watch: {
+                data:function(){
+                    this.makeData();
+                    var sortedColumn=this.currentColumns.filter(function(col){
+                        return col._sortType!=='normal'
+                    })
+                    if(sortedColumn.length>0){
+                        if(sortedColumn[0]._sortType==='asc'){
+                            this.handleSortByAsc(sortedColumn[0]._index)
+                        }else{
+                            this.handleSortByDesc(sortedColumn[0]._index)
+                        }
+                    }
+                }
+            },
+            mounted() {
+                this.makeData();
+                this.makeColumns();
+            },
+        })
+
+
+        var app=new Vue({
+            el:'#app',
+            data:{
+                columns:[
+                    {
+                        title:'姓名',
+                        key:'name'
+                    },
+                    {
+                        title:'年龄',
+                        key:'age',
+                        sortable:true
+                    },
+                    {
+                        title:'出生日期',
+                        key:'birthday',
+                        sortable:true
+                    },
+                    {
+                        title:'地址',
+                        key:'address'
+
+                    }
+                ],
+                data:[
+                    {
+                        name:'王小明',
+                        age:18,
+                        birthday:'1999-02-18',
+                        address:'北京朝阳区1'
+                    },
+                    {
+                        name:'张晓刚',
+                        age:25,
+                        birthday:'1992-02-18',
+                        address:'北京朝阳区2'
+                    },
+                    {
+                        name:'李晓红',
+                        age:30,
+                        birthday:'1987-02-18',
+                        address:'北京朝阳区3'
+                    },
+                    {
+                        name:'周晓威',
+                        age:26,
+                        birthday:'1991-02-18',
+                        address:'北京朝阳区4'
+                    }
+                ]
+            },
+            methods: {
+                handleAddData:function(){
+                    this.data.push({
+                        name:'刘孝天',
+                        age:19,
+                        birthday:'1998-02-18',
+                        address:'北京朝阳区5'
+                    })
+                }
+            },
+        })
+    </script>
+</body>
+</html>

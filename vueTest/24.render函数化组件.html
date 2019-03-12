@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>render函数化组件</title>
+   
+</head>
+<body>
+    <div id="app">
+       <smart-item :data="data"></smart-item>
+       <button @click="change('img')">图片</button>
+       <button @click="change('video')">视频</button>
+       <button @click="change('text')">文本</button>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        var ImgItem={
+            props:['data'],
+            render(creatElement) {
+                return creatElement('div',[
+                    creatElement('p','图片'),
+                    creatElement('img',{
+                        attrs:{
+                            src:this.data.url
+                        }
+                    })
+                ])
+            },
+        };
+        var VideoItem={
+            props:['data'],
+            render(creatElement){
+                return creatElement('div',[
+                    creatElement('p','视频'),
+                    creatElement('video',{
+                        attrs:{
+                            src:this.data.url,
+                            controls:'controls',
+                            autoplay:'autoplay'
+                        }
+                    })
+                ])
+            }
+        };
+        var TextItem={
+            props:['data'],
+            render(creatElement){
+                return creatElement('div',[
+                    creatElement('p','文本'),
+                    creatElement('span',this.data.text)
+                ])
+            }
+        }
+
+
+
+        Vue.component('smart-item',{
+            functional:true,
+            render:function(creatElement,context){
+                function getComponent(){
+                    var data=context.props.data;
+                    if(data.type=='img'){
+                        return ImgItem;
+                    }
+                    if(data.type=='video'){
+                        return VideoItem;
+                    }
+                    return TextItem;
+                }
+                return creatElement(
+                    getComponent(),
+                    {
+                        props:{
+                            data:context.props.data
+                        }
+                    },
+                    context.children
+                )
+            },
+            props:{
+                data:{
+                    type:Object,
+                    required:true
+                }
+            }
+        })
+
+        var app=new Vue({
+            el:'#app',
+            data:{
+                data:{}
+            },
+            methods: {
+                change:function(type){
+                    if(type=='img'){
+                        this.data={
+                            type:'img',
+                            url:'http://www.baidu.com'
+                        }
+                    }else if(type=='video'){
+                        this.data={
+                            type:'video',
+                            url:'http://www.sina.com'
+                        }
+                    }else{
+                        this.data={
+                            type:'text',
+                            url:'文本'
+                        }
+                    }
+                }
+            },
+            created() {
+                this.change('img')
+            }
+        })
+    </script>
+</body>
+</html>
