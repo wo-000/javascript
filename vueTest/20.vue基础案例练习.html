@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue基础案例练习</title>
+    <style>
+     [v-cloak]{
+         display: none;
+     }
+     .next{
+         background: #f00
+     }
+    </style>
+</head>
+<body>
+    <div id="app" v-cloak>
+        <div class="alone" v-show="show==0">
+            <input type="radio" name="sex"> 男
+            <input type="radio" name="sex"> 女
+            <input type="radio" name="sex"> 保留
+        </div>
+        <div class="more" v-show="show==1">
+            <input type="checkbox" name="" id="">aa
+            <input type="checkbox" name="" id="">bb
+            <input type="checkbox" name="" id="">cc
+            <input type="checkbox" name="" id="">dd
+        </div>
+        <div class="text" v-show="show==2">
+            <textarea name="" id="" cols="30" rows="10" v-model='val'></textarea>
+        </div>
+
+        <button>上一步</button>
+        <button class="next" @click="nextHandle" >{{nextText}}</button>
+        <button>重置</button>
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        var app=new Vue({
+            el:'#app',
+            data:{
+                show:0,
+                nextText:'下一步',
+                val:''
+            },
+            methods: {
+                nextHandle(){
+                    this.show++;
+                    if(this.show==2){
+                        this.nextText='提交';
+                    }
+                    if(this.show>2){
+                        this.show=2;
+                        if(this.val.length<=140){
+                            alert('输入140个以上')
+                        }else{
+                            this.val='';
+                            
+                        }
+                        
+                    }
+                }
+            },
+        })
+    </script>
+</body>
+</html>
