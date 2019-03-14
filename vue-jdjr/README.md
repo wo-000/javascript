@@ -4,15 +4,12 @@
 
 **体验地址**
 
-<img src="./static/enter.png" alt="体验地址" width="160" height="160">
-
-请使用手机扫码体验，微信或者浏览器的扫一扫都可以的。
-
+<img src="" alt="暂无地址" width="160" height="160">
+ 暂无地址
 ### 安装
 
 ```shell
-git clone https://github.com/cucygh/JDFinance.git
-cd JDFinance
+git clone https://github.com
 npm install
 ```
 
@@ -86,8 +83,8 @@ git checkout 分支名
 
 这里会定期整理大家常见的问题，访问如下：
 
-<a href="./issue.md" target="_blank">点击查看常见问题</a>
+<a href="" target="_blank">问题</a>
 
 ### 更多精彩内容
 
-如果喜欢本课程可以关注更多<a href="./note.md" target="_blank">优秀内容</a>，都是多年经验的积累和总结，欢迎大家和我讨论。
+<a href="" target="_blank">优秀内容</a>，都是多年经验的积累和总结，欢迎大家和我讨论。
