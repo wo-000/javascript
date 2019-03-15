@@ -11,7 +11,7 @@
     display: inline-block;
 }
 
-@mixin llist($direction:column) {
+@mixin list($direction:column) {
     @include flex($direction);
 }
 
