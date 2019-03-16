@@ -18,7 +18,7 @@ export default {
 .panel{
     @include panel;
     .content{
-
+        margin-bottom: 0px;
     }
 }
 </style>
