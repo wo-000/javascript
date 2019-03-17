@@ -3,35 +3,22 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import Vuex from 'vuex'
 
 Vue.config.productionTip = false
 
+import MintUI from 'mint-ui'
+Vue.use(MintUI)
+import 'mint-ui/lib/style.css'
+
+import Axios from 'axios';
+Vue.prototype.$axios=Axios;
+Axios.defaults.baseURL = '/api'
+// Axios.defaults.headers.post['Content-Type'] = 'application/json';
+
+// Axios.defaults.baseURL='https://api.douban.com';
 /* eslint-disable no-new */
-
-const store=new Vuex.Store({
-  state:{
-    count:0,
-    list:[0,1,6,10,26]
-  },
-  mutations:{
-    add(state,n=3){
-      state.count+=n;
-    },
-    reduce(state){
-      state.count--;
-    }
-  },
-  getters:{
-    filterList:state=>{
-      return state.list.filter(item=>item<10)
-    }
-  }
-})
-
 new Vue({
   el: '#app',
-  store,
   router,
   components: { App },
   template: '<App/>'
