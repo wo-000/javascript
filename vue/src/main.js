@@ -15,7 +15,14 @@ Vue.prototype.$axios=Axios;
 Axios.defaults.baseURL = '/api'
 // Axios.defaults.headers.post['Content-Type'] = 'application/json';
 
-// Axios.defaults.baseURL='https://api.douban.com';
+import MyUl from './components/common/MyUl'
+Vue.component(MyUl.name,MyUl)
+import MyLi from './components/common/MyLi'
+Vue.component(MyLi.name,MyLi)
+import NavBar from './components/common/NavBar'
+Vue.component(NavBar.name,NavBar)
+
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
