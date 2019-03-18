@@ -7,11 +7,18 @@
 export default {
      data(){
         return {
-            title:'新闻2'
+            title:'新闻2',
+            newsLists:[]
         }
     },
     methods: {
         
+    },
+    created() {
+        this.$axios.get('/movie/top250')
+        .then(res=>{
+            console.log(res.data)
+        }).catch(err=>console.log(err))
     },
 }
 </script>
