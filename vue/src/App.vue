@@ -46,4 +46,11 @@ export default {
   margin: 0;
   padding: 0
 }
+.mint-tabbar{
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  
+}
 </style>
