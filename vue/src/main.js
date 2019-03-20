@@ -14,6 +14,21 @@ import Axios from 'axios';
 Vue.prototype.$axios=Axios;
 Axios.defaults.baseURL = '/api'
 // Axios.defaults.headers.post['Content-Type'] = 'application/json';
+Axios.interceptors.request.use(function(config){
+  MintUI.Indicator.open({
+    text: '加载中...',
+    spinnerType: 'fading-circle'
+  });
+  console.log(config)
+  return config;
+})
+Axios.interceptors.response.use(function(response){
+  MintUI.Indicator.close();
+  console.log(response)
+  return response
+})
+
+
 
 import MyUl from './components/common/MyUl'
 Vue.component(MyUl.name,MyUl)

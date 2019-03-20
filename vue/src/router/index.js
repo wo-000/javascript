@@ -6,6 +6,7 @@ import Shopcart from '@/components/Shopcart/Shopcart'
 import Search from '@/components/Search/Search'
 import NewsList from '@/components/NewsList/NewsList'
 import NewsDetail from '@/components/NewsList/NewsDetail'
+import GoodsShow from '@/components/GoodsShow/GoodsShow'
 
 
 Vue.use(Router)
@@ -41,6 +42,11 @@ export default new Router({
       path:'/NewsList/NewsDetail/:id',
       name:'NewsDetail',
       component:NewsDetail
+    },
+    {
+      path:'/GoodsShow/GoodsShow',
+      name:'GoodsShow',
+      component:GoodsShow
     }
   ]
 })

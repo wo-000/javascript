@@ -44,7 +44,8 @@ export default {
           title:'商品',
           className:'back-shop',
           route:{
-            name:'home'
+            name:'GoodsShow',
+            params:{page:1}
           }
         },{
           title:'留言',

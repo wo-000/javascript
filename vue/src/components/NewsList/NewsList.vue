@@ -1,8 +1,10 @@
 <template>
    <div>
        <nav-bar :title="title"></nav-bar>
-       <div class="demo">
-      <ul >
+       <div class="demo" ref="wrapper" :style="{ height: wrapperHeight + 'px' }">
+
+    <mt-loadmore :bottom-method="loadBottom" :auto-fill="autoFill" @bottom-status-change="handleBottomChange" :bottom-all-loaded="allLoaded" ref="loadmore">
+        <ul >
             <li v-for="news in newsLists" :key="news.id">
                 <router-link :to="{name:'NewsDetail',params:{id:news.id}  }">
                     <img class="" :src="news.images.small">
@@ -16,6 +18,7 @@
                 </router-link>
             </li>
         </ul>
+    </mt-loadmore>
     </div>
    </div>
 </template>
@@ -24,19 +27,38 @@ export default {
      data(){
         return {
             title:'新闻2',
-            newsLists:[]
+            newsLists:[],
+            allLoaded:false,
+            autoFill:false,
+            count:10,
+            wrapperHeight:0
         }
     },
     methods: {
-        
+        loadBottom(){
+            console.log("aaa");
+            this.loadInfo(this.count)
+            // this.$refs.loadmore.onBottomLoaded();
+        },
+        handleBottomChange(status){
+            console.log(status)
+        },
+        loadInfo(count){
+            this.$axios.get('/movie/top250?start=0&count='+this.count)
+            .then(res=>{
+                this.count+=10;
+                console.log(res.data.subjects);
+                this.newsLists=res.data.subjects;
+            }).catch(err=>console.log(err))
+        }
     },
     created() {
-        this.$axios.get('/movie/top250')
-        .then(res=>{
-            console.log(res.data.subjects);
-            this.newsLists=res.data.subjects;
-        }).catch(err=>console.log(err))
+        this.loadInfo(this.count);
     },
+     mounted() {
+      this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
+    }
+    
 }
 </script>
 <style scoped>
