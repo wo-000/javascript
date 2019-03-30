@@ -7,8 +7,9 @@ import Vuex from 'vuex'
 import Axios from 'axios'
 
 import FastClick from 'fastclick'  //移动端300毫秒点击延迟问题
-import './assets/styles/reset.css'  //重置默认样式
-import './assets/styles/border.css'  //移动端1像素问题
+import 'styles/reset.css'  //重置默认样式
+import 'styles/iconfont.css'
+import 'styles/border.css'  //移动端1像素问题
 
 FastClick.attach(document.body)
 
