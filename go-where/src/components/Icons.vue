@@ -8,7 +8,7 @@
                     <div class="icon-img">
                         <img :src="item.imgUrl" alt="">
                     </div>
-                    <p>{{item.title}}</p>
+                    <p>{{item.desc}}</p>
                 </div>
             </swiper-slide>
             <!-- Optional controls -->
@@ -23,6 +23,9 @@
 <script>
 export default {
     name:'Icons',
+    props:{
+        iconList:Array
+    },
     data(){
         return{
            swiperOption:{
@@ -80,7 +83,7 @@ export default {
     computed: {
         pages(){
           const pages=[];
-          this.iconLists.forEach((item,index) => {
+          this.iconList.forEach((item,index) => {
               const page=Math.floor(index/8);
               if(!pages[page]){
                     pages[page]=[];

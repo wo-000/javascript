@@ -1,9 +1,9 @@
 <template>
     <div class="wrapper">
-        <swiper :options="swiperOption">
+        <swiper :options="swiperOption" v-if="showSwiper">
             <!-- slides -->
-            <swiper-slide v-for="item in dataImgs" :key="item.id">
-                <img class="swiper-img" :src="item.src" alt="">
+            <swiper-slide v-for="item in swiperList" :key="item.id">
+                <img class="swiper-img" :src="item.imgUrl" alt="">
             </swiper-slide>
             <!-- Optional controls -->
             <div class="swiper-pagination"  slot="pagination"></div>
@@ -14,6 +14,9 @@
 <script>
 export default {
   name: 'HomeSwiper',
+  props:{
+      swiperList:Array
+  },
   data () {
     return {
       dataImgs:[
@@ -31,7 +34,12 @@ export default {
         loop :true
       }
     }
-  }
+  },
+  computed: {
+      showSwiper(){ //解决 swiper组件默认会显示最后一张图片
+          return this.swiperList.length
+      }
+  },
 }
 </script>
 
@@ -43,7 +51,7 @@ export default {
     overflow hidden
     width 100%
     height 0
-    padding-bottom 42.66%  //图片自适应
+    padding-bottom 31.33%  //图片自适应
     background #eee
     .swiper-img
         width 100%
