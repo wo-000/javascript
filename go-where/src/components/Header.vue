@@ -7,10 +7,12 @@
       <span class="iconfont">&#xe632;</span>
       输入城市景点
     </div>
-    <div class="header-right">
-      城市
-      <span class="iconfont">&#xe6aa;</span>
-    </div>
+    <router-link to="/City">
+      <div class="header-right">
+        城市
+        <span class="iconfont">&#xe6aa;</span>
+      </div>
+    </router-link>
   </div>
 </template>
 
@@ -52,4 +54,6 @@ export default {
       width: 1.24rem;
       float : right;
       text-align center;
+      text-decoration none 
+      color #fff 
 </style>
