@@ -61,6 +61,12 @@ export default {
 
         },10)
 
+        /**
+         * 
+         * 未实行函数节流
+         * 
+         */
+
         // // const startY=this.$refs['A'][0].offsetTop;
         // const touchY=e.touches[0].clientY - 79;
         // const index=Math.floor((touchY-this.startY)/20)
