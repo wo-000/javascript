@@ -14,13 +14,14 @@ import HomeSwiper from '@/components/Swiper'
 import Icons from '@/components/Icons'
 import Recommend from '@/components/Recommend'
 import Weekend from '@/components/Weekend'
-
+import {mapState} from 'vuex'
 
 import Axios from 'axios'
 export default {
   name: 'Home',
   data () {
     return {
+      lastCity:'',
       iconList:[],
       recommendList:[],
       swiperList:[],
@@ -34,9 +35,12 @@ export default {
       Recommend,
       Weekend
   },
+  computed: {
+    ...mapState(['city'])
+  },
   methods: {
     getHomeInfo(){
-      Axios.get('/api/index.json')
+      Axios.get('/api/index.json?city='+this.city)
       .then(this.getInfoSuc)
     },
     getInfoSuc(res){
@@ -50,7 +54,14 @@ export default {
     }
   },
   mounted() {
+    this.lastCity=this.city;
     this.getHomeInfo()
+  },
+  activated() { //使用keep-alive 的生命周期函数
+    if(this.lastCity!==this.city){
+      this.lastCity=this.city;
+      this.getHomeInfo();
+    }
   },
 }
 </script>
