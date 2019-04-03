@@ -13,7 +13,7 @@ border: 0;
 outline: 0;
 vertical-align: baseline;
 background: transparent;
-touch-action: none
+/* touch-action: none */
 }
 html,body{
     font-size:50px; 
