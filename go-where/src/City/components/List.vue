@@ -34,7 +34,7 @@
                 <div class="item border-bottom"
                     v-for="innerItem of item"
                     :key="innerItem.id"
-                @click="handleCityClick(innerItem.name)"
+                    @click="handleCityClick(innerItem.name)"
                     >
                     {{innerItem.name}}
                 </div>
@@ -66,16 +66,17 @@ export default {
              this.scroll.scrollToElement(element)
          }
      } 
-  },
-  mounted() {
-      this.scroll=new Bscroll(this.$refs.wrapper)
-  },
+  }, 
   methods: {
       handleCityClick(city){
           this.$store.dispatch('changeCity',city)
           this.$router.push('/')
       }
   },
+  mounted() {
+      this.scroll=new Bscroll(this.$refs.wrapper,{click:true,tap:true})  //better-scroll影响页面点击事件问题
+  },
+
 }
 </script>
 

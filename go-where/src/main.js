@@ -15,7 +15,6 @@ import 'styles/border.css'  //移动端1像素问题
 
 FastClick.attach(document.body)
 
-
 import VueAwesomeSwiper from 'vue-awesome-swiper' //轮播插件
 import 'swiper/dist/css/swiper.css'
  
