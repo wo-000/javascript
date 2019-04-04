@@ -1,11 +1,53 @@
 <template>
   <div class="recommend" ref="recommend">
-    推荐
+    <div v-if="recommendList.length" class="slider-wrapper" ref="sliderWrapper">
+      <Slider>
+        <div v-for="item in recommendList" :key="item.id">
+          <a :href="item.linkUrl">
+            <img :src="item.picUrl" alt="">
+          </a>
+        </div>
+      </Slider>
+    </div>
+    <div class="recommend-list">
+      <h1 class="list-title">
+        热门歌单推荐
+      </h1>
+      <ul></ul>
+    </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-  
+import {commonParams,Error_YES} from '@/api/config'
+import Slider from '@/base/slider/slider'
+export default{
+  data(){
+    return {
+      recommendList:[]
+    }
+  },
+  components:{
+    Slider
+  },
+  created() {  
+    this.getRecommend();
+  }, 
+  methods: {
+    getRecommend(){
+      var url = '/api/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg'
+      this.$axios.get(url,{params:commonParams}).then(res=>{
+        // console.log(res.data.code,Error_YES)
+        if(res.data.code===Error_YES){
+          this.recommendList=res.data.data.slider
+          console.log(res)
+        }
+      }).catch(error=>{
+        console.log(error)
+      })
+    }
+  },
+}
 </script>
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
