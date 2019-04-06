@@ -12,12 +12,19 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        target: 'https://c.y.qq.com', //设置你调用的接口域名和端口号 别忘了加http
-        changeOrigin: true,//允许跨域
-        pathRewrite: {
-            '^/api': ''//这个是定义要访问的路径，名字随便写
-        }
-    },
+          target: 'https://c.y.qq.com', //设置你调用的接口域名和端口号 别忘了加http
+          changeOrigin: true,//允许跨域
+          pathRewrite: {
+              '^/api': ''//这个是定义要访问的路径，名字随便写
+          }
+      },
+      '/songsApi': {
+          target: 'https://u.y.qq.com', //设置你调用的接口域名和端口号 别忘了加http
+          changeOrigin: true,//允许跨域
+          pathRewrite: {
+              '^/songsApi': ''//这个是定义要访问的路径，名字随便写
+          }
+      },
     },
 
     // Various Dev Server settings
