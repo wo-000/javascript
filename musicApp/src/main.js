@@ -7,7 +7,7 @@ import axios from "axios"
 import 'babel-polyfill'
 import fastclick from 'fastclick'
 import VueLazyLoad from 'vue-lazyload'
-
+import store from './store'
 import 'common/stylus/index.styl'
 
 Vue.prototype.$axios=axios
@@ -24,6 +24,7 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

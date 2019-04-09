@@ -5,9 +5,10 @@
           class="listview"
           ref="listview">
     <ul>
-      <li v-for="group in singers" class="list-group" :key="group.singer_id">
+      
+      <li @click="moveSingerDetail(group)" v-for="group in singers" class="list-group" :key="group.singer_id">
         <ul>
-          <li  class="list-group-item">
+          <li class="list-group-item">
             <img class="avatar" v-lazy="group.singer_pic">
             <span class="name">{{group.singer_name}}</span>
           </li>
@@ -20,12 +21,15 @@
       <loading></loading>
     </div> -->
   </scroll>
-
+  <transition name="slide" mode="out-in">
+   <router-view></router-view>
+  </transition>
   </div>
 </template>
 
 <script>
 import scroll from '@/base/scroll/scroll'
+import {mapMutations} from 'vuex'
 const hotName='';
 const hotNameList=10;
  export default{
@@ -70,7 +74,16 @@ const hotNameList=10;
             })
           }
        });
-     }
+     },
+     moveSingerDetail(group){
+       this.$router.push({
+         path:`/singer/${group.singer_id}`
+       })
+       this.setSinger(group)
+     },
+     ...mapMutations({
+       setSinger:'set_singer'
+     })
    },
    mounted() {
      this.getSingers();
@@ -81,6 +94,12 @@ const hotNameList=10;
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~common/stylus/variable"
+  .slide-enter-active, .slide-leave-active
+    transition: all 0.3s
+
+  .slide-enter, .slide-leave-to
+    transform: translate3d(100%, 0, 0)
+
   .singer
     position: fixed
     top: 88px
