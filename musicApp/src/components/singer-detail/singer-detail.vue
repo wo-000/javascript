@@ -8,7 +8,7 @@
           <i class="icon-back"></i>
         </div>
         <h1 class="title" v-html="title"></h1>
-        <div class="bg-image"  >
+        <div class="bg-image" ref="bgImageDiv" >
           <!-- ref="bgImage" -->
           <img class="imgBg" :src="bgImage" ref="bgImage" alt="">
           <div class="play-wrapper">
@@ -20,7 +20,7 @@
           <div class="filter" ref="filter"></div>
         </div>
         <div class="bg-layer" ref="layer"></div>
-        <scroll :data="songs" class="list" ref="list">
+        <scroll @scroll="scroll" :probe-type="probeType" :listen-scroll="listenScroll" :data="songs" class="list" ref="list">
           <div class="song-list-wrapper">
             <song-list :songs="songs" ></song-list>  
             <!-- :rank="rank" @select="selectItem" -->
@@ -49,14 +49,17 @@ import Scroll from '@/base/scroll/scroll'
       return {
         songs: [],
         title:'',
-        bgImage:''
+        bgImage:'',
+        scrollY:0
       }
     },
     created() {
       console.log(this.singer);
       this.title=this.singer.singer_name;
       this.bgImage=this.singer.singer_pic;
-      this.getSingerInfo()
+      this.getSingerInfo();
+      this.probeType=3;
+      this.listenScroll=true;
     },
     methods: {
       getSingerInfo(){
@@ -89,11 +92,30 @@ import Scroll from '@/base/scroll/scroll'
       },
       back(){
         this.$router.back();
+      },
+      scroll(pos){
+        this.scrollY=pos.y
+      }
+    },
+    watch:{
+     scrollY(newY){
+         let tranlateY=Math.max(this.minTranslateY,newY)
+         let zIndex=0;
+         this.$refs.layer.style['transform']=`translate3d(0,${tranlateY}px,0)`
+         console.log(newY,this.minTranslateY)
+        if(newY<this.minTranslateY){
+          zIndex=10
+          this.$refs.bgImageDiv.style.height='40px'
+          this.$refs.bgImage.style.height='40px'
+        }
+        this.$refs.bgImageDiv.style.zIndex=zIndex
       }
     },
     mounted() {
       this.$refs.list.$el.style.top=`${this.$refs.bgImage.clientHeight}`+"px"
-    },
+      this.imageHeight=this.$refs.bgImage.clientHeight;
+      this.minTranslateY=-this.imageHeight+40
+   },
     components: {
       Scroll,
       SongList
@@ -160,7 +182,7 @@ import Scroll from '@/base/scroll/scroll'
       .play-wrapper
         position: absolute
         bottom: 20px
-        z-index: 50
+        z-index: 36
         width: 100%
         .play
           box-sizing: border-box
@@ -192,11 +214,13 @@ import Scroll from '@/base/scroll/scroll'
       position: relative
       height: 100%
       background: $color-background
+      z-index: 38
     .list
       position: fixed
       top: 0
       bottom: 0
       width: 100%
+      z-index: 38
       background: $color-background
       .song-list-wrapper
         padding: 20px 30px
