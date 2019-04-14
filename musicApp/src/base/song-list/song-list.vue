@@ -1,7 +1,7 @@
 <template>
   <div class="song-list">
     <ul>
-      <li  class="item" v-for="(song, index) in songs" :key="index">
+      <li @click="seletItem(song,index)" class="item" v-for="(song, index) in songs" :key="index">
           <!-- @click="selectItem(song, index)" -->
         <div class="rank" >
             <!-- v-show="rank" -->
@@ -36,6 +36,10 @@
             if(index>2){
                 return index+1;
             }
+        },
+        seletItem(item,index){
+          console.log(item,index)
+          this.$emit('select',item,index)
         }
     },
   }
