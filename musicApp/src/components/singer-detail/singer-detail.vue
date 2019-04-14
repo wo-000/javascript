@@ -4,14 +4,16 @@
     <div class="singer-detail">
 
       <div class="music-list">
-        <div class="back" @click="back">
-          <i class="icon-back"></i>
+        <div class="top-bg" ref="topBg">
+          <div class="back" @click="back">
+            <i class="icon-back"></i>
+          </div>
+          <h1 class="title" v-html="title"></h1>
         </div>
-        <h1 class="title" v-html="title"></h1>
         <div class="bg-image" ref="bgImageDiv" >
           <!-- ref="bgImage" -->
           <img class="imgBg" :src="bgImage" ref="bgImage" alt="">
-          <div class="play-wrapper">
+          <div class="play-wrapper" ref="play">
             <div ref="playBtn" class="play">
               <i class="icon-play"></i>
               <span class="text">随机播放全部</span>
@@ -25,9 +27,9 @@
             <song-list :songs="songs" ></song-list>  
             <!-- :rank="rank" @select="selectItem" -->
           </div>
-          <!-- <div v-show="!songs.length" class="loading-container">
+          <div v-show="!songs.length" class="loading-container">
             <loading></loading>
-          </div> -->
+          </div>
         </scroll>
       </div>
 
@@ -38,6 +40,7 @@
 <script>
 import {mapGetters} from 'vuex'
 import SongList from '@/base/song-list/song-list'
+import Loading from '@/base/loading/loading'
 import Scroll from '@/base/scroll/scroll'
   export default {
     computed: {
@@ -50,7 +53,8 @@ import Scroll from '@/base/scroll/scroll'
         songs: [],
         title:'',
         bgImage:'',
-        scrollY:0
+        scrollY:0,
+        imageHeight:0
       }
     },
     created() {
@@ -99,16 +103,32 @@ import Scroll from '@/base/scroll/scroll'
     },
     watch:{
      scrollY(newY){
-         let tranlateY=Math.max(this.minTranslateY,newY)
-         let zIndex=0;
+         let tranlateY=Math.max(this.minTranslateY,newY);
+         let scale=1;
+         const percent=Math.abs(newY/(this.imageHeight+100))
          this.$refs.layer.style['transform']=`translate3d(0,${tranlateY}px,0)`
-         console.log(newY,this.minTranslateY)
+         console.log(newY,this.minTranslateY,this.imageHeight)
+        this.$refs.list.$el.style.top=`${this.$refs.bgImage.clientHeight}`+"px"
         if(newY<this.minTranslateY){
-          zIndex=10
-          this.$refs.bgImageDiv.style.height='40px'
-          this.$refs.bgImage.style.height='40px'
+          // this.$refs.list.$el.style.top=+"px"
+          this.$refs.topBg.style.background="#333"
+        }else{
+          this.$refs.topBg.style.background="none"
         }
-        this.$refs.bgImageDiv.style.zIndex=zIndex
+
+        if(newY>0){
+          scale=1+percent
+          this.$refs.bgImage.style.zIndex=40
+          this.$refs.bgImageDiv.style.zIndex=40
+          this.$refs.play.style.zIndex=40  
+        } else{
+          this.$refs.bgImage.style.zIndex=30
+          this.$refs.bgImageDiv.style.zIndex=30
+          this.$refs.play.style.zIndex=30
+        }
+        this.$refs.bgImage.style['transform']=`scale(${scale})`
+        this.$refs.bgImageDiv.style['transform']=`scale(${scale})`
+         
       }
     },
     mounted() {
@@ -118,7 +138,8 @@ import Scroll from '@/base/scroll/scroll'
    },
     components: {
       Scroll,
-      SongList
+      SongList,
+      Loading
     }
   }
 </script>
@@ -134,8 +155,12 @@ import Scroll from '@/base/scroll/scroll'
     right:0
     bottom:0;
     background:#333
-  
-
+  .top-bg
+    width: 100%
+    height 40px
+    position absolute
+    z-index 999
+    transition .2s
   .music-list
     position: fixed
     z-index: 100
