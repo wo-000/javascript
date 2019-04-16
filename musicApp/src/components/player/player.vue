@@ -65,7 +65,7 @@
             </div>
             </div>
         </div>
-        <div class="mini-player" v-show="fullScreen">
+        <div class="mini-player" v-show="!fullScreen">
           <div class="icon">
             <img  width="40" height="40" >
             </div>
@@ -82,8 +82,6 @@
             <i class="icon-playlist"></i>
             </div>
         </div>
-        {{singer}}
-        {{playlist}}
     </div>
 </template>
 <script>
