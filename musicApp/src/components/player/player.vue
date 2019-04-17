@@ -1,5 +1,7 @@
 <template>
     <div class="player" v-show="playlist.length>0">
+      <transition name="normal">
+      
         <div class="normal-player" v-show="fullScreen">
                 <div class="background">
             <img width="100%" height="100%" :src="singer.singer_pic" >
@@ -65,9 +67,13 @@
             </div>
             </div>
         </div>
+        
+      </transition>
+      <transition name="mini">
+      
         <div class="mini-player" v-show="!fullScreen">
           <div class="icon">
-            <img  width="40" height="40" >
+            <img  width="40" height="40" :src="singer.singer_pic" >
             </div>
             <div class="text">
             <h2 class="name" ></h2>
@@ -82,6 +88,8 @@
             <i class="icon-playlist"></i>
             </div>
         </div>
+        
+      </transition>
     </div>
 </template>
 <script>
