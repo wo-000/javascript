@@ -1,6 +1,11 @@
 <template>
     <div class="player" v-show="playlist.length>0">
-      <transition name="normal">
+      <transition name="normal"
+        @enter="enter"
+        @after-enter="afterEnter"
+        @leave="leave"
+        @after-leave="afterLeave"
+      >
       
         <div class="normal-player" v-show="fullScreen">
                 <div class="background">
@@ -71,7 +76,7 @@
       </transition>
       <transition name="mini">
       
-        <div class="mini-player" v-show="!fullScreen">
+        <div class="mini-player" v-show="!fullScreen" @click="open">
           <div class="icon">
             <img  width="40" height="40" :src="singer.singer_pic" >
             </div>
@@ -95,6 +100,10 @@
 <script>
 import {mapGetters,mapMutations,mapActions} from 'vuex'
 import Scroll from '@/base/scroll/scroll'
+import animations from 'create-keyframe-animation'
+import {prefixStyle} from 'common/js/dom'
+const transform = prefixStyle('transform')
+const transitionDuration = prefixStyle('transitionDuration')
 export default {
     computed: {
        ...mapGetters([
@@ -113,7 +122,65 @@ export default {
         },
         ...mapMutations({
             setFullScreen:'set_full_screen'
-        })
+        }),
+        enter(el, done) {
+          const {x, y, scale} = this._getPosAndScale()
+
+          let animation = {
+            0: {
+              transform: `translate3d(${x}px,${y}px,0) scale(${scale})`
+            },
+            60: {
+              transform: `translate3d(0,0,0) scale(1.1)`
+            },
+            100: {
+              transform: `translate3d(0,0,0) scale(1)`
+            }
+          }
+
+          animations.registerAnimation({
+            name: 'move',
+            animation,
+            presets: {
+              duration: 400,
+              easing: 'linear'
+            }
+          })
+
+          animations.runAnimation(this.$refs.cdWrapper, 'move', done)
+        },
+        afterEnter() {
+          animations.unregisterAnimation('move')
+          this.$refs.cdWrapper.style.animation = ''
+        },
+        leave(el, done) {
+          this.$refs.cdWrapper.style.transition = 'all 0.4s'
+          const {x, y, scale} = this._getPosAndScale()
+          this.$refs.cdWrapper.style[transform] = `translate3d(${x}px,${y}px,0) scale(${scale})`
+          this.$refs.cdWrapper.addEventListener('transitionend', done)
+        },
+        afterLeave() {
+          this.$refs.cdWrapper.style.transition = ''
+          this.$refs.cdWrapper.style[transform] = ''
+        },
+        open(){
+          this.setFullScreen(true)
+        },
+        _getPosAndScale() {
+          const targetWidth = 40
+          const paddingLeft = 40
+          const paddingBottom = 30
+          const paddingTop = 80
+          const width = window.innerWidth * 0.8
+          const scale = targetWidth / width
+          const x = -(window.innerWidth / 2 - paddingLeft)
+          const y = window.innerHeight - paddingTop - width / 2 - paddingBottom
+          return {
+            x,
+            y,
+            scale
+          }
+        },
     },
     created() {
       console.log(this.singer)
