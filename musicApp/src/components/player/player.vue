@@ -9,65 +9,65 @@
       
         <div class="normal-player" v-show="fullScreen">
                 <div class="background">
-            <img width="100%" height="100%" :src="singer.singer_pic" >
+            <img width="100%" height="100%" :src="currentSong.imgUrl" >
             </div>
             <div class="top">
             <div class="back" @click="back">
                 <i class="icon-back"></i>
             </div>
-            <h1 class="title" ></h1>
-            <h2 class="subtitle" ></h2>
+            <h1 class="title" >{{currentSong.singersongname}}</h1>
+            <h2 class="subtitle" >{{currentSong.singername}}</h2>
             </div>
             <div class="middle"
             >
             <div class="middle-l" ref="middleL">
                 <div class="cd-wrapper" ref="cdWrapper">
-                <div class="cd" >
-                    <img class="image" :src="singer.singer_pic" >
+                <div class="cd" :class="cdCls">
+                    <img class="image" :src="currentSong.imgUrl" >
                 </div>
                 </div>
                 <div class="playing-lyric-wrapper">
                 <div class="playing-lyric"></div>
                 </div>
             </div>
-            <scroll class="middle-r" ref="lyricList" >
+            <!-- <scroll class="middle-r" ref="lyricList" >
                 <div class="lyric-wrapper">
-                <!-- <div v-if="currentLyric">
+                <div v-if="currentLyric">
                     <p ref="lyricLine"
                     class="text"
                     :class="{'current': currentLineNum ===index}"
                     v-for="(line,index) in currentLyric.lines">{{line.txt}}</p>
-                </div> -->
                 </div>
-            </scroll>
+                </div>
+            </scroll> -->
             </div>
             <div class="bottom">
-            <div class="dot-wrapper">
+            <!-- <div class="dot-wrapper">
                 <span class="dot" ></span>
                 <span class="dot" ></span>
-            </div>
+            </div> -->
             <div class="progress-wrapper">
-                <span class="time time-l"></span>
+                <span class="time time-l">{{format(currentTime)}}</span>
                 <div class="progress-bar-wrapper">
-                <!-- <progress-bar ></progress-bar> -->
+                <progress-bar :percent="percent" @percentChange="onProgressBarChange"></progress-bar>
                 </div>
-                <span class="time time-r"></span>
+                <span class="time time-r">{{currentSong.duration}}</span>
             </div>
             <div class="operators">
-                <div class="icon i-left" >
-                <i ></i>
+                <div class="icon i-left" @click="changeMode">
+                  <!-- <i :class="iconMode"></i> -->
                 </div>
-                <div class="icon i-left" >
-                <i class="icon-prev"></i>
+                <div class="icon i-left" :class="disableCls">
+                   <i @click="prev" class="icon-prev"></i>
                 </div>
                 <div class="icon i-center" >
-                <i ></i>
+                   <i @click="togglePlay" :class="playIcon"></i>
                 </div>
-                <div class="icon i-right" >
-                <i class="icon-next"></i>
+                <div class="icon i-right" :class="disableCls">
+                  <i  @click="next" class="icon-next"></i>
                 </div>
                 <div class="icon i-right">
-                <i class="icon" ></i>
+                  <i class="icon" ></i>
                 </div>
             </div>
             </div>
@@ -78,50 +78,94 @@
       
         <div class="mini-player" v-show="!fullScreen" @click="open">
           <div class="icon">
-            <img  width="40" height="40" :src="singer.singer_pic" >
+            <img :class="cdCls" width="40" height="40" :src="currentSong.imgUrl" >
             </div>
             <div class="text">
-            <h2 class="name" ></h2>
-            <p class="desc" ></p>
+            <h2 class="name" >{{currentSong.singersongname}}</h2>
+            <p class="desc" >{{currentSong.singername}}</p>
             </div>
             <div class="control">
-            <!-- <progress-circle >
-                <i class="icon-mini"></i>
-            </progress-circle> -->
+              <progress-circle radius="32" :percent="percent">
+                  <i class="icon-mini" @click.stop="togglePlay" :class="miniIcon"></i>
+              </progress-circle>
             </div>
             <div class="control" >
             <i class="icon-playlist"></i>
             </div>
         </div>
-        
+       
       </transition>
+      <audio :src="currentSong.src" ref="audio" @canplay="ready" @error="error" @timeupdate="updateTime"></audio>     
     </div>
 </template>
 <script>
 import {mapGetters,mapMutations,mapActions} from 'vuex'
 import Scroll from '@/base/scroll/scroll'
+import progressBar from '@/base/progress-bar/progress-bar'
 import animations from 'create-keyframe-animation'
+import ProgressCircle from '@/base/progress-circle/progress-circle'
 import {prefixStyle} from 'common/js/dom'
+import {playMode} from 'common/js/config'
+import {shuffle} from 'common/js/util'
+import {playerMixin} from 'common/js/mixin'
 const transform = prefixStyle('transform')
 const transitionDuration = prefixStyle('transitionDuration')
 export default {
+    data(){
+      return {
+        songReady:false,
+        currentTime:0
+      }
+    },
     computed: {
+      playIcon(){
+        return this.playing?'icon-pause':'icon-play'
+      },
+      miniIcon(){
+        return this.playing?'icon-pause-mini':'icon-play-mini'
+      },
+      cdCls(){
+        return this.playing?'play':'play pause'
+      },
+      disableCls(){
+        return this.songReady?'':'disable'
+      },
+      iconMode(){
+        return this.mode===playMode.sequence?'icon-sequence':this.mode===playMode.loop?'icon-loop':'icon-random'
+      },
+      percent() {
+        if(this.currentSong.duration!==undefined){
+          let minutes=this.currentSong.duration.split(":")[0];
+          let sec=this.currentSong.duration.split(":")[1];
+          return this.currentTime / ((parseInt(minutes)*60)+parseInt(sec))
+        }
+      },
        ...mapGetters([
            'fullScreen',
            'playlist',
            'currentSong',
-           'singer'
+           'singer',
+           'playing',
+           'currentIndex',
+            'mode',
+            'sequenceList'
        ])
     },
     components:{
-        Scroll
+        Scroll,
+        progressBar,
+        ProgressCircle
     },
     methods: {
         back(){
             this.setFullScreen(false)
         },
         ...mapMutations({
-            setFullScreen:'set_full_screen'
+            setFullScreen:'set_full_screen',
+            setPlayingState:'set_playing_state',
+            setCurrentIndex:'set_current_index',
+            setPlayMode:'set_play_mode',
+            setPlaylist:'set_playlist'
         }),
         enter(el, done) {
           const {x, y, scale} = this._getPosAndScale()
@@ -181,9 +225,99 @@ export default {
             scale
           }
         },
+        togglePlay(){
+          this.setPlayingState(!this.playing)
+        },
+        next(){
+          if(!this.songReady){
+            return
+          }
+          let index =this.currentIndex+1;
+          if(index===this.playlist.length){
+            index=0
+          }
+          this.setCurrentIndex(index)
+          if(!this.playing){
+            this.togglePlay()
+          }
+          this.songReady=false
+        },
+        prev(){
+          if(!this.songReady){
+            return
+          }
+          let index =this.currentIndex-1;
+          if(index===-1){
+            index=this.playlist.length-1
+          }
+          this.setCurrentIndex(index)
+          if(!this.playing){
+            this.togglePlay()
+          }
+           this.songReady=false
+        },
+        ready(){
+          this.songReady=true
+        },
+        error(){
+          this.songReady=true
+        },
+        updateTime(e){
+          this.currentTime=e.target.currentTime
+        },
+        format(interval){
+          interval=interval|0;
+          const minute=interval/60|0;
+          const second=interval%60;
+          if(second<10){
+            return `0${minute}:0${second}`
+          }
+            return `0${minute}:${second}`
+        },
+        onProgressBarChange(percent){
+           if(this.currentSong.duration!==undefined){
+            let minutes=this.currentSong.duration.split(":")[0];
+            let sec=this.currentSong.duration.split(":")[1];
+            const currentTime = ((parseInt(minutes)*60)+parseInt(sec)) * percent
+            this.$refs.audio.currentTime = currentTime
+           }
+          if (!this.playing) {
+            this.togglePlay()
+          }
+        },
+        changeMode(){
+          const mode=(this.mode+1)%3
+          this.setPlayMode(this.mode)
+
+          let list=null;
+          if(mode===playMode.random){
+            list=shuffle(this.sequenceList)
+          }else{
+            list=this.sequenceList
+          }
+          this.resetCurrentIndex(list)
+          this.setPlaylist(list)
+        },
+        resetCurrentIndex(list){
+          let index = list.findIndex((item)=>{
+            return item.id===this.currentSong.id
+          })
+          this.setCurrentIndex(index)
+        }
+        
     },
-    created() {
-      console.log(this.singer)
+    watch: {
+      currentSong(newSong,oldSong){
+        this.$nextTick(()=>{  //DOM未加载的时候，可以使用$nextTick做延迟以获取DOM再执行
+          this.$refs.audio.play()
+        })
+      },
+      playing(newPlaying){
+        const audio=this.$refs.audio
+        this.$nextTick(()=>{
+         newPlaying?audio.play():audio.pause()
+        })
+      }
     },
 }
 </script>
