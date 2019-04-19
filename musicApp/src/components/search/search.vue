@@ -1,11 +1,40 @@
 <template>
   <div class="search">
-    搜索
+    <search-box></search-box>
+    <search-list></search-list>
+    <Confirm></Confirm>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-  
+import SearchBox from '@/base/search-box/search-box'
+import SearchList from '@/base/search-list/search-list'
+import Confirm from '@/base/confirm/confirm'
+export default{
+  data(){
+    return {}
+  },
+  components:{
+    SearchBox,
+    SearchList,
+    Confirm
+  },
+  methods: {
+    getHotKey(){
+      let url='/api/splcloud/fcgi-bin/gethotkey.fcg'
+      this.$axios.get(url)
+      .then((res)=>{
+        console.log(res)
+      })
+      .catch((error)=>{
+        console.log(error)
+      })
+    }
+  },
+  mounted() {
+    this.getHotKey()
+  },
+}
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">

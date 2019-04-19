@@ -32,6 +32,7 @@
         <Loading></Loading>
       </div>
     </scroll>
+
   </div>
 </template>
 
@@ -106,7 +107,7 @@ export default{
         this.checkLoaded=true
       }
     }
-  },
+  }
 }
 </script>
 
