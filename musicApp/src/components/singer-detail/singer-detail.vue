@@ -204,7 +204,6 @@ import {playlistMixin} from 'common/js/mixin'
          let scale=1;
          const percent=Math.abs(newY/(this.imageHeight+100))
          this.$refs.layer.style['transform']=`translate3d(0,${tranlateY}px,0)`
-         console.log(newY,this.minTranslateY,this.imageHeight)
         this.$refs.list.$el.style.top=`${this.$refs.bgImage.clientHeight}`+"px"
         if(newY<this.minTranslateY){
           // this.$refs.list.$el.style.top=+"px"
