@@ -10,6 +10,11 @@ import VueLazyLoad from 'vue-lazyload'
 import store from './store'
 import 'common/stylus/index.styl'
 
+
+/* eslint-disable no-unused-vars */
+// import vconsole from 'vconsole'
+// let vConsole=new vconsole();
+
 Vue.prototype.$axios=axios
 
 fastclick.attach(document.body)
