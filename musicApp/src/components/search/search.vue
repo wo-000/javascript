@@ -1,38 +1,74 @@
 <template>
   <div class="search">
-    <search-box></search-box>
-    <search-list></search-list>
-    <Confirm></Confirm>
+    <div class="search-box-wrapper">
+      <search-box ref="searchBox" @query="onQueryChange"></search-box>
+    </div>
+
+    <div ref="shortcutWrapper" class="shortcut-wrapper">
+      <scroll class="shortcut">
+        <div>
+          <div class="hot-key">
+            <h1 class="title">热门搜索</h1>
+            <ul>
+              <li @click="addQuery(item.k)" :key="item.n" class="item" v-for="item in hotKey">
+                <span>{{item.k}}</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </scroll>
+    </div>
+
+    <Suggest :query="query"></Suggest>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 import SearchBox from '@/base/search-box/search-box'
-import SearchList from '@/base/search-list/search-list'
-import Confirm from '@/base/confirm/confirm'
+import Suggest from '@/components/suggest/suggest'
+import Scroll from '@/base/scroll/scroll'
 export default{
   data(){
-    return {}
+    return {
+      hotKey:[],
+      query:''
+    }
   },
   components:{
     SearchBox,
-    SearchList,
-    Confirm
+    Scroll,
+    Suggest
   },
   methods: {
     getHotKey(){
       let url='/api/splcloud/fcgi-bin/gethotkey.fcg'
       this.$axios.get(url)
       .then((res)=>{
+        this.hotKey=res.data.data.hotkey.slice(0,10)
         console.log(res)
       })
       .catch((error)=>{
         console.log(error)
       })
+    },
+    onQueryChange(query){
+      this.query=query
+    },
+    addQuery(k){
+      this.$refs.searchBox.setQuery(k)
     }
   },
   mounted() {
     this.getHotKey()
+  },
+  watch: {
+    query(newQuery){
+      if (!newQuery) {
+          setTimeout(() => {
+            // this.$refs.shortcut.refresh()
+          }, 20)
+        }
+    }
   },
 }
 </script>
