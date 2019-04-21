@@ -9,25 +9,32 @@
             </div>
             <div class="icon iconfont icon-sousuo search-entry search-icon"></div>
         </div>
+        <div class="movie-list">
+            <movie-list :movies-data="moviesData" v-if="moviesData"></movie-list>
+        </div>
     </div>
 </template>
 <script>
 import HeaderTop from '@/components/common/header'
 import City from '@/components/common/city'
+import MovieList from '@/components/common/movieList'
 export default {
     data(){
         return{
-            title:'电影首页'
+            title:'电影首页',
+            moviesData:[]
         }
     },
     components:{
         HeaderTop,
-        City
+        City,
+        MovieList
     },
     methods: {
         getMoviesInfo(){
             this.$axios.get('/api/ajax/movieOnInfoList?token=')
             .then((res)=>{
+                this.moviesData=res.data.movieList
                 console.log(res.data)
             })
         }
@@ -37,9 +44,11 @@ export default {
     },
 }
 </script>
-<style scoped>
+<style lang="scss" scoped>
+@import '~@/style/css/common.scss';
 .top-tab{
     position: fixed;
+    background: #fff;
     top: 50px;
     left: 0;
     right: 0;
@@ -51,7 +60,7 @@ export default {
     align-items: center;
     height: 44px;
     -webkit-box-pack: justify;
-    justify-content: space-between;
+    justify-content: space-around;
 }
 .switch-hot {
     display: -webkit-box;
@@ -59,14 +68,16 @@ export default {
     height: 44px;
     line-height: 44px;
     position: relative;
-}
-.switch-hot .hot-item {
-    font-size: 15px;
-    color: #666;
-    width: 80px;
-    text-align: center;
-    margin: 0 12px;
-    font-weight: 700;
+    .hot-item {
+        font-size: 15px;
+        color: #666;
+        width: 80px;
+        text-align: center;
+        margin: 0 6px;
+    }
+    .active{
+        color: #ef4238;
+    }
 }
 .icon-suosuo{
     width: 20px;
@@ -76,5 +87,10 @@ export default {
 }
 .iconfont::before{
     margin-top: 0px;
+    color: $bgColor;
+    font-size: 20px;
+}
+.movie-list{
+    padding-top:95px;  
 }
 </style>

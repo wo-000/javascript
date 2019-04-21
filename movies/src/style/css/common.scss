@@ -1,0 +1,10 @@
+$bgColor : #f03d37;
+$fontColor : #696969;
+$borderColor : #d8d8d8;
+$borderColorLight : #f2f2f2;
+
+@mixin line-ellipsis {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}

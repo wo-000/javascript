@@ -10,10 +10,9 @@ export default {
   
 }
 </script>
-<style scoped>
-
+<style lang="scss" scoped>
   .city-entry{
-    padding-left: 15px;
+    padding-left: 8px;
     font-size: 15px;
     color: #666;
     display: -webkit-box;
