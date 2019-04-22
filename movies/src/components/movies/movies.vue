@@ -4,13 +4,17 @@
         <div class="top-tab">
             <city></city>
             <div class="switch-hot" >
-                <div class="hot-item active">正在热映</div>
-                <div class="hot-item ">即将上映</div>
+                <div class="hot-item" :class="isHot?'active':''" @click="hot">正在热映</div>
+                <div class="hot-item" :class="isHot?'':'active'" @click="comingSoon">即将上映</div>
             </div>
             <div class="icon iconfont icon-sousuo search-entry search-icon"></div>
         </div>
-        <div class="movie-list">
+        <div class="movie-list" v-if="isHot">
             <movie-list :movies-data="moviesData" v-if="moviesData"></movie-list>
+        </div>
+        <div class="comingsoon" v-if="!isHot">
+            <wash :wash-data="washData"></wash>
+            <movie-list :movies-data="comingData" v-if="comingData"></movie-list>
         </div>
     </div>
 </template>
@@ -18,29 +22,65 @@
 import HeaderTop from '@/components/common/header'
 import City from '@/components/common/city'
 import MovieList from '@/components/common/movieList'
+import Wash from '@/components/common/wash'
 export default {
     data(){
         return{
             title:'电影首页',
-            moviesData:[]
+            moviesData:[],
+            comingData:[],
+            washData:[],
+            isHot:true
         }
     },
     components:{
         HeaderTop,
         City,
-        MovieList
+        MovieList,
+        Wash
     },
     methods: {
         getMoviesInfo(){
             this.$axios.get('/api/ajax/movieOnInfoList?token=')
             .then((res)=>{
                 this.moviesData=res.data.movieList
+                // console.log(res.data)
+            })
+            .catch((error)=>{
+                console.log(error)
+            })
+        },
+        getComingSoonInfo(){
+            this.$axios.get('/api/ajax/comingList?ci=1058&token=&limit=10')
+            .then((res)=>{
+                this.comingData=res.data.coming;
                 console.log(res.data)
             })
+            .catch((error)=>{
+                console.log(error)
+            })
+        },
+        getComingMost(){
+            this.$axios.get('/api/ajax/mostExpected?ci=1058&limit=10&offset=0&token=')
+            .then((res)=>{
+                this.washData=res.data.coming;
+                console.log(res.data)
+            })
+            .catch((error)=>{
+                console.log(error)
+            })
+        },
+        hot(){
+            this.isHot=true;
+        },
+        comingSoon(){
+            this.isHot=false;
         }
     },
     mounted() {
-        this.getMoviesInfo()
+        this.getMoviesInfo();
+        this.getComingSoonInfo();
+        this.getComingMost();
     },
 }
 </script>
@@ -61,6 +101,7 @@ export default {
     height: 44px;
     -webkit-box-pack: justify;
     justify-content: space-around;
+    z-index: 3;
 }
 .switch-hot {
     display: -webkit-box;
@@ -90,7 +131,7 @@ export default {
     color: $bgColor;
     font-size: 20px;
 }
-.movie-list{
+.movie-list,.comingsoon{
     padding-top:95px;  
 }
 </style>

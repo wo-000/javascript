@@ -1,7 +1,7 @@
 <template>
   <div class="city">
     <div class="city-entry">
-      <span class="city-name">上海</span><i class="city-entry-arrow"></i>
+      <span class="city-name">鄢陵</span><i class="city-entry-arrow"></i>
     </div>
   </div>
 </template>

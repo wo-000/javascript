@@ -4,6 +4,7 @@
       v-for="(item,index) in moviesData"
       :key="item.id"
       >
+      <p class="group-date" v-if="item.comingTitle">{{item.comingTitle}}</p>
       <div class="main-block" v-if="item.globalReleased">
         <div class="avatar" >
           <div class="default-img-bg">
@@ -46,11 +47,12 @@
                 <span class="p-suffix">人想看</span>
               </div>
               <div class="actor line-ellipsis">主演: {{item.star}}</div>
-               <div class="show-info line-ellipsis">{{item.showInfo}}</div>
+               <div class="show-info line-ellipsis">{{item.showInfo||item.rt+' 上映'}}</div>
             </div>
           </div>
           <div class="button-block" data-id="1211727">
-            <div class="btn pre normal"><span class="fix" data-bid="dp_wx_home_movie_btn">预售</span></div>
+            <div class="btn pre normal"  v-if="item.version!=''"><span class="fix" data-bid="dp_wx_home_movie_btn">预售</span></div>
+            <div class="btn toggle-wish-btn normal" v-else><span class="fix" data-bid="dp_wx_home_movie_btn">想看</span></div>
           </div>
         </div>
       </div>
@@ -81,7 +83,7 @@ export default {
       for(let i=0;i<this.imgsData.length;i++){
         arrImgs.push(this.imgsData[i].img.split('w.h')[0]+'128.180'+this.imgsData[i].img.split('w.h')[1])
       }
-      console.log(arrImgs)
+      // console.log(arrImgs)
       return arrImgs;
     }
   },
@@ -93,10 +95,21 @@ export default {
 <style lang="scss" scoped>
 @import '@/style/css/common.scss';
 .item{
-  padding: 15px 15px 0 15px;
+  padding: 0 15px;
 }
 .movie-info{
   padding-bottom:56px;
+}
+.detail .wantsee .person {
+  color: #faaf00;
+  font-size: 15px;
+  font-weight: 600;
+}
+.group-date {
+  padding-top: 15px;
+  margin: 0;
+  font-size: 14px;
+  color: #333;
 }
 .main-block{
   display: flex;
@@ -104,6 +117,7 @@ export default {
   justify-content: left;
   align-items: end;
   flex: 1;
+  padding-top: 15px;
   .content-wrapper{
     display: flex;
     flex-direction: row;
@@ -162,6 +176,9 @@ export default {
     }
     .pre{
       background: #3c9fe6
+    }
+    .toggle-wish-btn{
+      background-color: #faaf00;
     }
   }
 }

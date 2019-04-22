@@ -51,6 +51,18 @@ export default {
       this.currentIndex=2;
     }
   },
+  watch: {
+    $route(to,from){
+      console.log(to,from)
+      if(to.name=='User'){
+        this.currentIndex=2;
+      }else if(to.name=='Cinema'){
+        this.currentIndex=1;
+      }else{
+        this.currentIndex=0;
+      }
+    }
+  },
 }
 </script>
 
