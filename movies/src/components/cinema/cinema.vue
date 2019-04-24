@@ -8,20 +8,28 @@
                 <span>搜影院</span>
             </div>
         </div>
+        <filter-area :brand-data="brandData"></filter-area>
+        <shop :cinemas-data="cinemasData"></shop>
     </div>
 </template>
 <script>
 import HeaderTop from '@/components/common/header'
 import City from '@/components/common/city'
+import FilterArea from '@/components/common/filterArea'
+import Shop from '@/components/common/shop'
 export default {
     data(){
         return{
-            title:'影院'
+            title:'影院',
+            cinemasData:[],
+            brandData:{}
         }
     },
     components:{
         HeaderTop,
-        City
+        City,
+        FilterArea,
+        Shop
     },
     methods: {
         cinemaInfo(){
@@ -43,6 +51,7 @@ export default {
                 }
             })
             .then((res)=>{
+                this.cinemasData=res.data.cinemas;
                 console.log(res.data)
             })
             .catch((error)=>{
@@ -52,6 +61,7 @@ export default {
         filterCinema(){
             this.$axios.get('/api/ajax/filterCinemas?ci=1058')
             .then((res)=>{
+                this.brandData=res.data;
                 console.log(res.data)
             })
             .catch((error)=>{

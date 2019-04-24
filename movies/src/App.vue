@@ -63,9 +63,17 @@ export default {
       }
     }
   },
+  created() {
+    if(this.$route.name=='User'){
+      this.currentIndex=2;
+    }else if(this.$route.name=='Cinema'){
+      this.currentIndex=1;
+    }else{
+      this.currentIndex=0;
+    }
+  },
 }
 </script>
-
 <style lang="scss">
 @import './style/css/reset.css';
 @import './style/css/font.css';
