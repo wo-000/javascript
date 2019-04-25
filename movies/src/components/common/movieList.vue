@@ -3,6 +3,7 @@
     <div class="item" 
       v-for="(item,index) in moviesData"
       :key="item.id"
+      @click="detailHandle(item.id)"
       >
       <p class="group-date" v-if="item.comingTitle">{{item.comingTitle}}</p>
       <div class="main-block" v-if="item.globalReleased">
@@ -88,6 +89,11 @@ export default {
     }
   },
   methods: {
+    detailHandle(id){
+      this.$router.push({
+        path:'/movies/'+id
+      })
+    }
   },
  
 }

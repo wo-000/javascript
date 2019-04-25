@@ -17,8 +17,7 @@
             <movie-list :movies-data="comingData" v-if="comingData"></movie-list>
         </div>
         <router-view></router-view>
-        <!-- <search v-if="isSearch" @flagShow="flagSearch" :placeholder-text="placeholderText"></search> -->
-    </div>
+   </div>
 </template>
 <script>
 import HeaderTop from '@/components/common/header'
