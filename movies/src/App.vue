@@ -53,7 +53,7 @@ export default {
   },
   watch: {
     $route(to,from){
-      console.log(to,from)
+      // console.log(to,from)
       if(to.name=='User'){
         this.currentIndex=2;
       }else if(to.name=='Cinema'){
@@ -74,6 +74,7 @@ export default {
   },
 }
 </script>
+
 <style lang="scss">
 @import './style/css/reset.css';
 @import './style/css/font.css';
