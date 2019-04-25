@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Movies from '@/components/movies/movies'
 import Cinema from '@/components/cinema/cinema'
 import User from '@/components/user/user'
+import Search from '@/components/search/search'
 
 Vue.use(Router)
 
@@ -27,6 +28,11 @@ export default new Router({
       path: '/user',
       name: 'User',
       component: User
+    },
+    {
+      path: '/search',
+      name: 'Search',
+      component: Search
     }
   ]
 })

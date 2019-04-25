@@ -7,7 +7,7 @@
                 <div class="hot-item" :class="isHot?'active':''" @click="hot">正在热映</div>
                 <div class="hot-item" :class="isHot?'':'active'" @click="comingSoon">即将上映</div>
             </div>
-            <div class="icon iconfont icon-sousuo search-entry search-icon"></div>
+            <div @click="isShow" class="icon iconfont icon-sousuo search-entry search-icon"></div>
         </div>
         <div class="movie-list" v-if="isHot">
             <movie-list :movies-data="moviesData" v-if="moviesData"></movie-list>
@@ -16,6 +16,8 @@
             <wash :wash-data="washData"></wash>
             <movie-list :movies-data="comingData" v-if="comingData"></movie-list>
         </div>
+        <router-view></router-view>
+        <!-- <search v-if="isSearch" @flagShow="flagSearch" :placeholder-text="placeholderText"></search> -->
     </div>
 </template>
 <script>
@@ -23,6 +25,7 @@ import HeaderTop from '@/components/common/header'
 import City from '@/components/common/city'
 import MovieList from '@/components/common/movieList'
 import Wash from '@/components/common/wash'
+import Search from '@/components/search/search'
 export default {
     data(){
         return{
@@ -30,14 +33,17 @@ export default {
             moviesData:[],
             comingData:[],
             washData:[],
-            isHot:true
+            isHot:true,
+            placeholderText:'搜电影、搜影院',
+            isSearch:false
         }
     },
     components:{
         HeaderTop,
         City,
         MovieList,
-        Wash
+        Wash,
+        Search
     },
     methods: {
         getMoviesInfo(){
@@ -75,6 +81,11 @@ export default {
         },
         comingSoon(){
             this.isHot=false;
+        },
+        isShow(){
+            this.$router.push({
+                path:'/search'
+            })
         }
     },
     mounted() {
@@ -134,4 +145,5 @@ export default {
 .movie-list,.comingsoon{
     padding-top:95px;  
 }
+
 </style>
