@@ -1,7 +1,7 @@
 <template>
   <div class="cinema-list">
     <div class="list-wrap">
-      <div class="item mb-line-b" v-for="item in cinemasData" :key="item.id">
+      <div class="item mb-line-b" @click="moveToHandle(item.id,movieId)" v-for="item in cinemasData" :key="item.id">
         <div class="title-block box-flex middle">
           <div class="title line-ellipsis">
             <span>{{item.nm}}</span>
@@ -46,8 +46,26 @@ export default {
     cinemasData:{
       type:Array,
       default:[]
+    },
+    movieId:{
+      type:Number,
+      default:0
     }
-  }
+  },
+  methods: {
+    moveToHandle(id,movieId){
+      if(movieId){
+        this.$router.push({
+          path:'/cinema/'+id+'/'+movieId
+        })
+      }else{
+        this.$router.push({
+          path:'/cinema/'+id
+        })
+      }
+      
+    }
+  },
 };
 </script>
 <style lang="scss" scoped>

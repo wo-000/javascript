@@ -6,6 +6,10 @@ import axios from 'axios'
 import router from './router'
 import store from './store/store'
 
+import formatDate from './assets/js/formatDate.js'
+
+Vue.prototype.formatDate=formatDate;
+
 import 'lib-flexible'
 
 Vue.config.productionTip = false

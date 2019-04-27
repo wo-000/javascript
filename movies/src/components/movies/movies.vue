@@ -56,7 +56,7 @@ export default {
             })
         },
         getComingSoonInfo(){
-            this.$axios.get('/api/ajax/comingList?ci=1058&token=&limit=10')
+            this.$axios.get(`/api/ajax/comingList?ci=${this.$store.state.cityId}&token=&limit=10`)
             .then((res)=>{
                 this.comingData=res.data.coming;
                 console.log(res.data)
@@ -66,7 +66,7 @@ export default {
             })
         },
         getComingMost(){
-            this.$axios.get('/api/ajax/mostExpected?ci=1058&limit=10&offset=0&token=')
+            this.$axios.get(`/api/ajax/mostExpected?ci=${this.$store.state.cityId}&limit=10&offset=0&token=`)
             .then((res)=>{
                 this.washData=res.data.coming;
                 console.log(res.data)

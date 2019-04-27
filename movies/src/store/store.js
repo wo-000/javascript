@@ -4,24 +4,34 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 const state={
-    
+    cityId:10,
+    city:'上海'
+}
+
+const getters={
+    getCityId(state){
+        return state.cityId
+    },
+    getCity(state){
+        return state.city
+    }
 }
 
 const mutations={
-    add(state){
-        state.count++
+    changeCityId(state,cityNum){
+        state.cityId=cityNum
     },
-    redus(state){
-        state.count--
+    changeCity(state,cityName){
+        state.city=cityName
     }
 }
 
 const actions={
-    add:({commit})=>{
-        commit('add')
+    changeCityIdFun:(context,cityNum)=>{
+        context.commit('changeCityId',cityNum)
     },
-    redus:({commit})=>{
-        commit('redus')
+    changeCityFun:(context,cityName)=>{
+        context.commit('changeCity',cityName)
     }
 }
 

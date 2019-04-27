@@ -37,7 +37,7 @@
       </div>
     </div>
     <filter-area :brand-data="brandData"></filter-area>
-    <shop :cinemas-data="cinemasData"></shop>
+    <shop :cinemas-data="cinemasData" :movieId="movieDetailInfo.id"></shop>
   </div>
 </template>
 <script>
@@ -84,7 +84,7 @@ export default {
       this.$axios
         .post(`/api/ajax/movie`,{
             movieId: this.$route.params.id,
-            day: '2019-04-26',
+            day: this.formatDate.format(),
             offset: 0,
             limit: 20,
             districtId: -1,
@@ -95,7 +95,7 @@ export default {
             areaId: -1,
             stationId: -1,
             updateShowDay: true,
-            cityId: '1058'
+            cityId: this.$store.state.cityId
         })
         .then(res => {
           this.cinemasData=res.data.cinemas;

@@ -88,6 +88,7 @@ export default {
   display: -webkit-box;
   display: flex;
   justify-content: space-around;
+  z-index: 2;
   .nav-icon-wrapper{
     float: left;
     width: 25px;

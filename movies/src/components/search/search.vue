@@ -66,7 +66,7 @@ export default {
       this.$router.back()
     },
     searchHandle(){
-      this.$axios.get(`/api/ajax/search?kw=${this.val}&cityId=1058&stype=-1`)
+      this.$axios.get(`/api/ajax/search?kw=${this.val}&cityId=${this.$store.state.cityId}&stype=-1`)
       .then((res)=>{
         this.moviesList=res.data.movies.list.slice(0,3);
         this.moviesTotal=res.data.movies.total;

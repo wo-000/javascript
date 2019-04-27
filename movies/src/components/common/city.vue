@@ -1,13 +1,29 @@
 <template>
   <div class="city">
     <div class="city-entry">
-      <span class="city-name">鄢陵</span><i class="city-entry-arrow"></i>
+      <span class="city-name" @click="changeCity">{{city}}</span><i class="city-entry-arrow"></i>
     </div>
   </div>
 </template>
 <script>
+import {mapState,mapMutations,mapActions,mapGetters} from 'vuex'
 export default {
-  
+  computed: {
+    ...mapState({
+      city:state=>state.city,
+      cityId:state=>state.cityId
+    })
+  },
+  methods: {
+    changeCity(){
+      this.$router.push({
+        path:'/city'
+      })
+    }
+  },
+  mounted() {
+    console.log(this.city,this.cityId)
+  },
 }
 </script>
 <style lang="scss" scoped>
