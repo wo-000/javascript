@@ -17,7 +17,7 @@
             <span class="drop"></span>
           </div>
         </div>
-        <div class="close-tab">
+        <div class="close-tab" ref="itemTab">
           <div class="tab-content">
             <div class="page special" v-if="isShow==2">
               <div id="special-content">
@@ -61,7 +61,7 @@
                   <li class="item" :class="chooseAreaNum==1?'chosen':''" @click="chooseArea(1)">地铁站</li>
                 </ul>
               </div>
-              <div id="region-list">
+              <div class="region-list" ref="regionList">
                 <div id="region-sidenav">
                   <div id="district" v-if="brandData.district&&chooseAreaNum==0">
                     <div
@@ -153,13 +153,30 @@ export default {
       if (num != this.isShow) {
         this.isShow = num;
         document.getElementsByTagName("body")[0].style.height = "100%";
+        document.getElementsByTagName("body")[0].style.width = "100%";
         document.getElementsByTagName("body")[0].style.overflow = "hidden";
+        document.getElementsByTagName("body")[0].style.position = "fixed";
         this.$refs["filter"].style.height = "100%";
+        // this.$refs['itemTab'].style.height = (this.$refs["filter"].clientHeight - 180) +'px';
+        if(num==0){
+          this.$nextTick(function(){
+            this.$refs.regionList.style.height = (this.$refs["filter"].clientHeight - 230) +'px';
+          })
+        }
+       
+        
+        // this.$refs.regionList.style.height = (this.$refs["filter"].clientHeight - 230) +'px';
+        // document.getElementById('#region-list').style.height= (this.$refs["filter"].clientHeight - 240) +'px';
+        // console.log()
+        // this.$refs['regionList'].style.height = '100%'
       } else {
         this.isShow = 3;
         document.getElementsByTagName("body")[0].style.height = "auto";
         document.getElementsByTagName("body")[0].style.overflow = "auto";
+        document.getElementsByTagName("body")[0].style.position = "relative";
         this.$refs["filter"].style.height = "auto";
+        // this.$refs['itemTab'].style.height = 'auto';
+        
       }
     },
     chooseDistrict(id, index) {
@@ -326,9 +343,9 @@ export default {
         }
       }
     }
-    #region-list {
+    .region-list {
       background: #f5f5f5;
-      height: 380px;
+      // height: 380px;
       #region-sidenav {
         width: 35%;
         height: 100%;
@@ -371,7 +388,7 @@ export default {
       }
       .page.brand {
         min-height: 150px;
-        max-height: 352px;
+        max-height: 300px;
         #brand-content .brand-list {
           position: relative;
           line-height: 44px;

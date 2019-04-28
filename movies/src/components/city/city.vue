@@ -44,6 +44,11 @@ export default {
       isMove: false
     };
   },
+  updated() {
+    document.body.style.position='relative'
+     document.body.style.height='auto'
+      document.body.style.overflow='scroll'
+  },
   methods: {
     getCityInfo() {
       this.$axios
@@ -109,6 +114,9 @@ export default {
 <style lang="scss" scoped>
 #city {
   position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
   width: 100%;
   z-index: 7;
   h4 {
