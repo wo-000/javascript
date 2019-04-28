@@ -12,7 +12,7 @@
     </div>
     <filter-area :brand-data="brandData"></filter-area>
     <shop :cinemas-data="cinemasData"></shop>
-    <search v-if="isSearch" @flagShow="flagSearch" :placeholder-text="placeholderText"></search>
+    <!-- <search v-if="isSearch" @flagShow="flagSearch" :placeholder-text="placeholderText"></search> -->
   </div>
 </template>
 <script>
@@ -43,7 +43,7 @@ export default {
       this.$axios
         .get("/api/ajax/cinemaList", {
           params: {
-            day: "2019-04-27",
+            day:  this.formatDate.format(),
             offset: 0,
             limit: 20,
             districtId: -1,
@@ -81,7 +81,10 @@ export default {
       this.isSearch = val;
     },
     isShow() {
-      this.isSearch = true;
+      this.$router.push({
+        path:'/search'
+      })
+      // this.isSearch = true;
     }
   },
   mounted() {

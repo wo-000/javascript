@@ -72,6 +72,7 @@ export default {
 @import "~@/style/css/common";
 .cinema-list {
   margin-top: 2px;
+  padding-bottom: 50px;
   .item {
     padding: 13px 0 13px 0;
     margin: 0 15px;

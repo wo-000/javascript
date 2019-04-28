@@ -1,92 +1,179 @@
 <template>
-  <div class="filter">
-    <div class="nav-wrap filter-nav-wrap">
-      <div class="tab mb-line-b">
-        <div class="item">
-          <!-- chosenTitle -->
-          全城
-          <span class="drop"></span>
+  <div class="filter-wrap">
+    <div class="filter" ref="filter">
+      <div class="nav-wrap filter-nav-wrap">
+        <div class="tab mb-line-b">
+          <div class="item" @click="showCity(0)" :class="isShow==0?'chosenTitle':''">
+            <!--  -->
+            全城
+            <span class="drop"></span>
+          </div>
+          <div class="item" @click="showCity(1)" :class="isShow==1?'chosenTitle':''">
+            品牌
+            <span class="drop"></span>
+          </div>
+          <div class="item" @click="showCity(2)" :class="isShow==2?'chosenTitle':''">
+            特色
+            <span class="drop"></span>
+          </div>
         </div>
-        <div class="item">
-          品牌
-          <span class="drop"></span>
-        </div>
-        <div class="item">
-          特色
-          <span class="drop"></span>
-        </div>
-      </div>
-      <div class="close-tab">
-        <div class="tab-content">
-          <div class="page special" style="display:none">
-            <div id="special-content">
-              <div class="item-title">特色功能</div>
-              <div class="item-list">
-                <div class="item chosen">全部</div>
+        <div class="close-tab">
+          <div class="tab-content">
+            <div class="page special" v-if="isShow==2">
+              <div id="special-content">
+                <div class="item-title">特色功能</div>
+                <div class="item-list">
+                  <div class="item chosen">全部</div>
 
-                <div class="item">可退票</div>
+                  <div class="item">可退票</div>
 
-                <div class="item">可改签</div>
+                  <div class="item">可改签</div>
 
-                <div class="item">会员卡</div>
+                  <div class="item">会员卡</div>
+                </div>
+              </div>
+              <div id="special-btn">
+                <span class="btn" id="cancel-btn">重置</span>
+                <span class="btn" id="confirm-btn">确定</span>
               </div>
             </div>
-            <div id="special-btn">
-              <span class="btn" id="cancel-btn">重置</span>
-              <span class="btn" id="confirm-btn">确定</span>
-            </div>
-          </div>
-          <div class="page brand" style="display:none">
-            <div id="brand-content" v-if="brandData.brand">
-              <!-- <div class="item brand-list chosen">
+            <div class="page brand" v-if="isShow==1">
+              <div id="brand-content" v-if="brandData.brand">
+                <!-- <div class="item brand-list chosen" v-if="brandData.brand.subItems[0].id==-1">
                 <span class="brand-name">全部</span>
                 <span class="brand-count">2</span>
-              </div> -->
-              <div class="item brand-list" v-for="item in brandData.brand.subItems" :key="item.id">
-                <span class="brand-name">{{item.name}}</span>
-                <span class="brand-count">{{item.count}}</span>
-              </div>
-            </div>
-          </div>
-          <div class="page region" style="display:none">
-            <div id="region-tab">
-              <ul class="tab">
-                <li class="item chosen">商区</li>
-                <li class="item">地铁站</li>
-              </ul>
-            </div>
-            <div id="region-list">
-              <div id="region-sidenav">
-                <div id="district">
-                  <div class="district-li item chosen">全部(2)</div>
-
-                  <div class="district-li item">鼓楼广场(1)</div>
+                </div>-->
+                <div
+                  class="item brand-list"
+                  :class="item.id==-1?'chosen':''"
+                  v-for="item in brandData.brand.subItems"
+                  :key="item.id"
+                >
+                  <span class="brand-name">{{item.name}}</span>
+                  <span class="brand-count">{{item.count}}</span>
                 </div>
-                <div id="subway" style="display:none"></div>
               </div>
-              <div id="region-list-item">
-                <div id="filter-list">
-                  <div class="item chosen">
-                    <span class="item-name">全部</span>
-                    <span class="item-count">1</span>
+            </div>
+            <div class="page region" v-if="isShow==0">
+              <div id="region-tab">
+                <ul class="tab">
+                  <li class="item" :class="chooseAreaNum==0?'chosen':''" @click="chooseArea(0)">商区</li>
+                  <li class="item" :class="chooseAreaNum==1?'chosen':''" @click="chooseArea(1)">地铁站</li>
+                </ul>
+              </div>
+              <div id="region-list">
+                <div id="region-sidenav">
+                  <div id="district" v-if="brandData.district&&chooseAreaNum==0">
+                    <div
+                      class="district-li item"
+                      v-for="(item,index) in brandData.district.subItems"
+                      :key="item.id"
+                      @click="chooseDistrict(item.id,index)"
+                      :class="districtId==item.id?'chosen':''"
+                    >{{item.name}}({{item.count}})</div>
+                  </div>
+                  <div id="subway" v-if="brandData.subway&&chooseAreaNum==1">
+                    <div
+                      class="district-li item"
+                      v-for="(item,index) in brandData.subway.subItems"
+                      :key="item.id"
+                      @click="chooseSubway(item.id,index)"
+                      :class="subwayId==item.id?'chosen':''"
+                    >{{item.name}}({{item.count}})</div>
                   </div>
                 </div>
+                <div id="region-list-item">
+                  <div id="filter-list" v-if="brandData.district&&chooseAreaNum==0">
+                    <div
+                      class="item chosen"
+                      v-if="brandData.district.subItems[0].id==-1&&this.districtId=='-1'"
+                    >
+                      <span class="item-name">{{brandData.district.subItems[0].name}}</span>
+                      <span class="item-count">{{brandData.district.subItems[0].count}}</span>
+                    </div>
+                    <div
+                      class="item"
+                      :class="areaFilter.subItems[index].id==-1?'chosen':''"
+                      v-for="(item,index) in areaFilter.subItems"
+                      :key="item.id"
+                    >
+                      <span class="item-name">{{item.name}}</span>
+                      <span class="item-count">{{item.count}}</span>
+                    </div>
+                  </div>
+
+                  <div id="filter-list" v-if="brandData.subway&&chooseAreaNum==1">
+                    <div
+                      class="item chosen"
+                      v-if="brandData.subway.subItems[0].id==-1&&this.subwayId=='-1'"
+                    >
+                      <span class="item-name">{{brandData.subway.subItems[0].name}}</span>
+                      <span class="item-count">{{brandData.subway.subItems[0].count}}</span>
+                    </div>
+                    <div
+                      class="item"
+                      :class="subwayFilter.subItems[index].id==-1?'chosen':''"
+                      v-for="(item,index) in subwayFilter.subItems"
+                      :key="item.id"
+                    >
+                      <span class="item-name">{{item.name}}</span>
+                      <span class="item-count">{{item.count}}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="clearfix"></div>
               </div>
-              <div class="clearfix"></div>
             </div>
           </div>
         </div>
       </div>
     </div>
-   
   </div>
 </template>
 <script>
 export default {
-  props:{
-    brandData:{
-      type:Object,
-      default:{}
+  props: {
+    brandData: {
+      type: Object,
+      default: {}
+    }
+  },
+  data() {
+    return {
+      isShow: 3,
+      districtId: -1,
+      subwayId: -1,
+      areaFilter: [],
+      subwayFilter: [],
+      chooseAreaNum: 0
+    };
+  },
+  methods: {
+    showCity(num) {
+      if (num != this.isShow) {
+        this.isShow = num;
+        document.getElementsByTagName("body")[0].style.height = "100%";
+        document.getElementsByTagName("body")[0].style.overflow = "hidden";
+        this.$refs["filter"].style.height = "100%";
+      } else {
+        this.isShow = 3;
+        document.getElementsByTagName("body")[0].style.height = "auto";
+        document.getElementsByTagName("body")[0].style.overflow = "auto";
+        this.$refs["filter"].style.height = "auto";
+      }
+    },
+    chooseDistrict(id, index) {
+      this.districtId = id;
+      this.areaFilter = this.brandData.district.subItems[index];
+      console.log(this.brandData, id, this.brandData.district.subItems[index]);
+    },
+    chooseArea(num) {
+      this.chooseAreaNum = num;
+    },
+    chooseSubway(id, index) {
+      this.subwayId = id;
+      this.subwayFilter = this.brandData.subway.subItems[index];
+      console.log(this.brandData, id, this.brandData.district.subItems[index]);
     }
   }
 };
@@ -94,7 +181,15 @@ export default {
 <style lang="scss" scoped>
 @import "~@/style/css/common";
 .filter {
-  padding-top: 95px;
+  position: fixed;
+  top: 92px;
+  left: 0px;
+  right: 0px;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.4);
+}
+.filter-wrap {
+  padding-top: 135px;
 }
 .nav-wrap.filter-nav-wrap {
   width: 100%;
@@ -146,11 +241,11 @@ export default {
     }
   }
   .page.region {
-     #region-list-item {
-        width: 65%;
-        height: 100%;
-        float: right;
-        overflow: scroll;
+    #region-list-item {
+      width: 65%;
+      height: 100%;
+      float: right;
+      overflow: scroll;
     }
     #filter-list {
       background: #f5f5f5;
@@ -159,12 +254,12 @@ export default {
         height: 45px;
         line-height: 45px;
         padding: 0 0 0 25px;
-        span{
+        span {
           display: inline-block;
         }
         span.item-name {
           width: 80%;
-          font-size: 14px;
+          font-size: 12px;
           color: #333;
           text-overflow: ellipsis;
           white-space: nowrap;
@@ -179,7 +274,7 @@ export default {
           text-align: right;
         }
       }
-      .chosen{
+      .chosen {
         color: #f03d37;
         &::before {
           content: "√";
@@ -197,7 +292,6 @@ export default {
           color: #f03d37;
         }
       }
-     
     }
     #region-tab {
       height: 44px;
@@ -248,7 +342,7 @@ export default {
             height: 44px;
             padding-left: 10px;
             line-height: 44px;
-            font-size: 14px;
+            font-size: 12px;
             text-overflow: ellipsis;
             white-space: nowrap;
             overflow: hidden;
