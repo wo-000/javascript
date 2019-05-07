@@ -1,5 +1,5 @@
 <template>
-  <div class="filter-wrap">
+  <div class="filter-wrap" ref="filterwrap" @click.self="hideFilter">
     <div class="filter" ref="filter">
       <div class="nav-wrap filter-nav-wrap">
         <div class="tab mb-line-b">
@@ -150,6 +150,11 @@ export default {
   },
   methods: {
     showCity(num) {
+      if(this.$route.path.indexOf('cinema')===-1){
+         this.$refs.filter.classList.add('filter-movie-detail');
+         this.$refs.filterwrap.classList.add('filter-movie-wrap')
+      }
+
       if (num != this.isShow) {
         this.isShow = num;
         document.getElementsByTagName("body")[0].style.height = "100%";
@@ -175,6 +180,9 @@ export default {
         document.getElementsByTagName("body")[0].style.overflow = "auto";
         document.getElementsByTagName("body")[0].style.position = "relative";
         this.$refs["filter"].style.height = "auto";
+
+        this.$refs.filter.classList.remove('filter-movie-detail');
+        this.$refs.filterwrap.classList.remove('filter-movie-wrap')
         // this.$refs['itemTab'].style.height = 'auto';
         
       }
@@ -191,10 +199,18 @@ export default {
       this.subwayId = id;
       this.subwayFilter = this.brandData.subway.subItems[index];
       console.log(this.brandData, id, this.brandData.district.subItems[index]);
+    },
+    hideFilter(){
+      this.isShow = 3;
+      document.getElementsByTagName("body")[0].style.height = "auto";
+      document.getElementsByTagName("body")[0].style.overflow = "auto";
+      document.getElementsByTagName("body")[0].style.position = "relative";
+      this.$refs["filter"].style.height = "auto";
+      this.$refs.filter.classList.remove('filter-movie-detail');
+      this.$refs.filterwrap.classList.remove('filter-movie-wrap')
     }
   },
   mounted() {
-    console.log(this.$route.path);
     if(this.$route.path.indexOf('cinema')!=-1){
       this.$refs.filter.classList.add('filter-cinema')
     }else{
@@ -208,6 +224,24 @@ export default {
 .filter-cinema {
   position: fixed;
   top: 92px;
+  left: 0px;
+  right: 0px;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.4);
+}
+.filter-movie-wrap{
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  z-index: 4;
+}
+.filter-movie-detail{
+  position: fixed;
+  top: 50px;
   left: 0px;
   right: 0px;
   z-index: 2;
