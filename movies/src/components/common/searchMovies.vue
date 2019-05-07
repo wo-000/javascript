@@ -4,8 +4,7 @@
       <div class="movie cell" v-for="(item,index) in moviesList" :key="item.id">
         <img
           class="poster"
-          :src="imgsUrl[index]"
-          
+          v-lazy="imgsUrl[index]"
         >
         <div class="info">
           <div class="name-score">

@@ -9,8 +9,10 @@
             </div>
             <div @click="isShow" class="icon iconfont icon-sousuo search-entry search-icon"></div>
         </div>
-        <div class="movie-list" v-if="isHot">
-            <movie-list :movies-data="moviesData" v-if="moviesData"></movie-list>
+        <div class="movie-list" v-if="isHot" ref="moviewrap">
+            <!-- <scroller> -->
+                <movie-list :movies-data="moviesData" v-if="moviesData"></movie-list>
+            <!-- </scroller> -->
         </div>
         <div class="comingsoon" v-if="!isHot">
             <wash :wash-data="washData"></wash>
@@ -34,7 +36,8 @@ export default {
             washData:[],
             isHot:true,
             placeholderText:'搜电影、搜影院',
-            isSearch:false
+            isSearch:false,
+            pageNumber:0
         }
     },
     components:{
@@ -91,6 +94,11 @@ export default {
         this.getMoviesInfo();
         this.getComingSoonInfo();
         this.getComingMost();
+        
+        console.log(window.screen.height)
+        this.$refs.moviewrap.style.height=window.screen.height-90 + 'px'
+        this.$refs.moviewrap.style.position='relative'
+        this.$refs.moviewrap.style.top='95px'
     },
 }
 </script>
@@ -142,7 +150,6 @@ export default {
     font-size: 20px;
 }
 .movie-list,.comingsoon{
-    padding-top:95px;  
+    // padding-top:95px;
 }
-
 </style>

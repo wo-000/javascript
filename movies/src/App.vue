@@ -78,6 +78,9 @@ export default {
 @import "./style/css/reset.css";
 @import "./style/css/font.css";
 @import "./style/css/common.scss";
+.mint-indicator-wrapper{
+  z-index: 9999 !important;
+}
 .bottom-nav-bar {
   position: fixed;
   bottom: 0;

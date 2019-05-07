@@ -133,7 +133,7 @@ export default {
   left: 0px;
   height: 100%;
   background: #f2f2f2;
-  z-index: 99999;
+  z-index: 9;
 
   .filter-wrap {
     padding-top: 0px;

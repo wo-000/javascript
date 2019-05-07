@@ -6,10 +6,19 @@ import axios from 'axios'
 import router from './router'
 import store from './store/store'
 import VueLazyLoad from 'vue-lazyload'
+import VueScroller from 'vue-scroller'
 
+import MintUI from 'mint-ui'
+import 'mint-ui/lib/style.css'
+Vue.use(MintUI,{
+  lazyload:{
+    loading: require('./assets/imglazyload.gif'),
+  }
+})
 Vue.use(VueLazyLoad,{
   loading:require('./assets/imglazyload.gif')
 })
+Vue.use(VueScroller)
 
 import formatDate from './assets/js/formatDate.js'
 
@@ -20,6 +29,19 @@ import 'lib-flexible'
 Vue.config.productionTip = false
 
 Vue.prototype.$axios=axios
+
+axios.interceptors.request.use((config) => {
+        MintUI.Indicator.open('加载中...');
+          return config;
+        }, (err) => {
+        return Promise.reject(err)
+})
+axios.interceptors.response.use((config) => {
+          MintUI.Indicator.close();
+            return config;
+          }, (err) => {
+          return Promise.reject(err)
+  })
 
 /* eslint-disable no-new */
 new Vue({

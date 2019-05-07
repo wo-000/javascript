@@ -1,5 +1,5 @@
 <template>
-  <div class="movie-info" >
+  <div class="movie-info">
     <div class="item" 
       v-for="(item,index) in moviesData"
       :key="item.id"
@@ -95,7 +95,6 @@ export default {
       })
     }
   },
- 
 }
 </script>
 <style lang="scss" scoped>
@@ -164,6 +163,7 @@ export default {
   .avatar{
     img{
       height:90px;
+      width: 61px;
     }
   }
   .button-block{

@@ -67,6 +67,9 @@ module.exports = {
       },
       {
         test: /\.(css|scss)$/,
+        include:[
+          'node_modules/mint-ui/lib/'
+        ],
         use:[
           {
             loader: 'style-loader!css-loader!sass-loader'
