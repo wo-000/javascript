@@ -95,6 +95,9 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "~@/style/css/common.scss";
+.filter-wrap {
+    padding-top: 135px;
+}
 .top-tab {
   position: fixed;
   background: #f5f5f5;

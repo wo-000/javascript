@@ -107,7 +107,7 @@ export default {
     },
     getMovieArea() {
       this.$axios
-        .get(`/api/ajax/filterCinemas?movieId=${this.$route.params.id}&day=2019-04-26`)
+        .get(`/api/ajax/filterCinemas?movieId=${this.$route.params.id}&day=${this.formatDate.format()}`)
         .then(res => {
           this.brandData=res.data;
           console.log(res.data);
@@ -126,6 +126,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+
 #moviesDetail{
   position: absolute;
   top: 0px;
@@ -133,9 +134,8 @@ export default {
   height: 100%;
   background: #f2f2f2;
   z-index: 99999;
-  .filter{
+  .filter-wrap {
     padding-top: 0px;
-    width: 320px;
   }
   .cinema-list{
     width: 320px;

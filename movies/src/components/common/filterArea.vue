@@ -167,7 +167,7 @@ export default {
         
         // this.$refs.regionList.style.height = (this.$refs["filter"].clientHeight - 230) +'px';
         // document.getElementById('#region-list').style.height= (this.$refs["filter"].clientHeight - 240) +'px';
-        // console.log()
+        console.log(this.$refs["filter"].style.height)
         // this.$refs['regionList'].style.height = '100%'
       } else {
         this.isShow = 3;
@@ -192,21 +192,26 @@ export default {
       this.subwayFilter = this.brandData.subway.subItems[index];
       console.log(this.brandData, id, this.brandData.district.subItems[index]);
     }
-  }
+  },
+  mounted() {
+    console.log(this.$route.path);
+    if(this.$route.path.indexOf('cinema')!=-1){
+      this.$refs.filter.classList.add('filter-cinema')
+    }else{
+      this.$refs.filter.classList.remove('filter-cinema')
+    }
+  },
 };
 </script>
 <style lang="scss" scoped>
 @import "~@/style/css/common";
-.filter {
+.filter-cinema {
   position: fixed;
   top: 92px;
   left: 0px;
   right: 0px;
   z-index: 2;
   background: rgba(0, 0, 0, 0.4);
-}
-.filter-wrap {
-  padding-top: 135px;
 }
 .nav-wrap.filter-nav-wrap {
   width: 100%;
