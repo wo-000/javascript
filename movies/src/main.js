@@ -5,6 +5,11 @@ import App from './App'
 import axios from 'axios'
 import router from './router'
 import store from './store/store'
+import VueLazyLoad from 'vue-lazyload'
+
+Vue.use(VueLazyLoad,{
+  loading:require('./assets/imglazyload.gif')
+})
 
 import formatDate from './assets/js/formatDate.js'
 

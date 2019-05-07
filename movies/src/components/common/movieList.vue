@@ -9,7 +9,7 @@
       <div class="main-block" v-if="item.globalReleased">
         <div class="avatar" >
           <div class="default-img-bg">
-            <img :src="imgsData1[index]" onerror="this.style.visibility='hidden'">		
+            <img v-lazy="imgsData1[index]" onerror="this.style.visibility='hidden'">		
           </div>
         </div> 
         <div class="mb-outline-b content-wrapper">
@@ -34,7 +34,7 @@
       <div class="main-block" v-if="!item.globalReleased">
         <div class="avatar" >
           <div class="default-img-bg">
-            <img :src="imgsData1[index]" onerror="this.style.visibility='hidden'">		
+            <img v-lazy="imgsData1[index]" onerror="this.style.visibility='hidden'">		
           </div>
         </div> 
         <div class="mb-outline-b content-wrapper">

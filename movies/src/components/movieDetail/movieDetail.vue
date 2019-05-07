@@ -10,7 +10,7 @@
       <div class="detail box-flex">
         <div class="poster">
           <img
-          :src="imgSrc1"
+          v-lazy="imgSrc1"
           >
         </div>
         <div class="content flex">
@@ -134,6 +134,7 @@ export default {
   height: 100%;
   background: #f2f2f2;
   z-index: 99999;
+
   .filter-wrap {
     padding-top: 0px;
   }
