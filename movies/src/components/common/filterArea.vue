@@ -23,13 +23,16 @@
               <div id="special-content">
                 <div class="item-title">特色功能</div>
                 <div class="item-list">
-                  <div class="item chosen">全部</div>
-
+                  <div
+                    class="item"
+                    :class="item.id==-1?'chosen':''"
+                    v-for="item in this.brandData.service.subItems"
+                    :key="item.id"
+                  >{{item.name}}</div>
+                  <!-- <div class="item chosen">全部</div>
                   <div class="item">可退票</div>
-
                   <div class="item">可改签</div>
-
-                  <div class="item">会员卡</div>
+                  <div class="item">会员卡</div>-->
                 </div>
               </div>
               <div id="special-btn">
@@ -150,9 +153,9 @@ export default {
   },
   methods: {
     showCity(num) {
-      if(this.$route.path.indexOf('cinema')===-1){
-         this.$refs.filter.classList.add('filter-movie-detail');
-         this.$refs.filterwrap.classList.add('filter-movie-wrap')
+      if (this.$route.path.indexOf("cinema") === -1) {
+        this.$refs.filter.classList.add("filter-movie-detail");
+        this.$refs.filterwrap.classList.add("filter-movie-wrap");
       }
 
       if (num != this.isShow) {
@@ -163,16 +166,16 @@ export default {
         document.getElementsByTagName("body")[0].style.position = "fixed";
         this.$refs["filter"].style.height = "100%";
         // this.$refs['itemTab'].style.height = (this.$refs["filter"].clientHeight - 180) +'px';
-        if(num==0){
-          this.$nextTick(function(){
-            this.$refs.regionList.style.height = (this.$refs["filter"].clientHeight - 230) +'px';
-          })
+        if (num == 0) {
+          this.$nextTick(function() {
+            this.$refs.regionList.style.height =
+              this.$refs["filter"].clientHeight - 230 + "px";
+          });
         }
-       
-        
+
         // this.$refs.regionList.style.height = (this.$refs["filter"].clientHeight - 230) +'px';
         // document.getElementById('#region-list').style.height= (this.$refs["filter"].clientHeight - 240) +'px';
-        console.log(this.$refs["filter"].style.height)
+        console.log(this.$refs["filter"].style.height);
         // this.$refs['regionList'].style.height = '100%'
       } else {
         this.isShow = 3;
@@ -181,16 +184,15 @@ export default {
         document.getElementsByTagName("body")[0].style.position = "relative";
         this.$refs["filter"].style.height = "auto";
 
-        this.$refs.filter.classList.remove('filter-movie-detail');
-        this.$refs.filterwrap.classList.remove('filter-movie-wrap')
+        this.$refs.filter.classList.remove("filter-movie-detail");
+        this.$refs.filterwrap.classList.remove("filter-movie-wrap");
         // this.$refs['itemTab'].style.height = 'auto';
-        
       }
     },
     chooseDistrict(id, index) {
       this.districtId = id;
       this.areaFilter = this.brandData.district.subItems[index];
-      console.log(this.brandData, id, this.brandData.district.subItems[index]);
+      // console.log(this.brandData, id, this.brandData.district.subItems[index]);
     },
     chooseArea(num) {
       this.chooseAreaNum = num;
@@ -198,25 +200,26 @@ export default {
     chooseSubway(id, index) {
       this.subwayId = id;
       this.subwayFilter = this.brandData.subway.subItems[index];
-      console.log(this.brandData, id, this.brandData.district.subItems[index]);
+      // console.log(this.brandData, id, this.brandData.district.subItems[index]);
     },
-    hideFilter(){
+    hideFilter() {
       this.isShow = 3;
       document.getElementsByTagName("body")[0].style.height = "auto";
       document.getElementsByTagName("body")[0].style.overflow = "auto";
       document.getElementsByTagName("body")[0].style.position = "relative";
       this.$refs["filter"].style.height = "auto";
-      this.$refs.filter.classList.remove('filter-movie-detail');
-      this.$refs.filterwrap.classList.remove('filter-movie-wrap')
+      this.$refs.filter.classList.remove("filter-movie-detail");
+      this.$refs.filterwrap.classList.remove("filter-movie-wrap");
     }
   },
   mounted() {
-    if(this.$route.path.indexOf('cinema')!=-1){
-      this.$refs.filter.classList.add('filter-cinema')
-    }else{
-      this.$refs.filter.classList.remove('filter-cinema')
+    console.log(this.brandData);
+    if (this.$route.path.indexOf("cinema") != -1) {
+      this.$refs.filter.classList.add("filter-cinema");
+    } else {
+      this.$refs.filter.classList.remove("filter-cinema");
     }
-  },
+  }
 };
 </script>
 <style lang="scss" scoped>
@@ -229,17 +232,17 @@ export default {
   z-index: 2;
   background: rgba(0, 0, 0, 0.4);
 }
-.filter-movie-wrap{
+.filter-movie-wrap {
   position: absolute;
   top: 0px;
   left: 0px;
   right: 0px;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.4);
+  background: rgba(0, 0, 0, 0.4);
   z-index: 4;
 }
-.filter-movie-detail{
+.filter-movie-detail {
   position: fixed;
   top: 50px;
   left: 0px;
