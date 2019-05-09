@@ -86,12 +86,16 @@ export default {
 <style lang="scss" scoped>
 .search{
   position: absolute;
+  z-index: 3;
+}
+.search-wrapper{
+  position: absolute;
   top: 50px;
   left: 0px;
   right: 0px;
   min-height: calc(100% - 50px);
   background: #f2f2f2;
-  z-index: 3;
+  
   .search-result{
     background: #fff;
   }

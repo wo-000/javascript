@@ -8,8 +8,12 @@ import store from './store/store'
 import VueLazyLoad from 'vue-lazyload'
 import VueScroller from 'vue-scroller'
 
+import VueAwesomeSwiper from 'vue-awesome-swiper'
+import 'swiper/dist/css/swiper.css'
+
 import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
+
 Vue.use(MintUI,{
   lazyload:{
     loading: require('./assets/imglazyload.gif'),
@@ -19,6 +23,8 @@ Vue.use(VueLazyLoad,{
   loading:require('./assets/imglazyload.gif')
 })
 Vue.use(VueScroller)
+
+Vue.use(VueAwesomeSwiper)
 
 import formatDate from './assets/js/formatDate.js'
 

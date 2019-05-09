@@ -10,22 +10,30 @@
         >
       </div>
     </div>
+
+    <div data-v-4643b94f class="gap" style="height: 10px; background-color: rgb(240, 240, 240);"></div>
+    <div class="slider-wrap-div" v-if="showMovies.length>0">
+      <div class="bg-slider" :style="{background:'url('+showMoviesImgs[index]+')'}"></div>
+      <div class="post-bg-filter"></div>
+      <swiper :options="swiperOption" class="swiper-container">
+        <swiper-slide class="swiper-item" v-for="(item,index) of showMovies" :key="item.id">
+          <img class="swiper-img" v-lazy="showMoviesImgs[index]" alt="item.nm">
+        </swiper-slide>
+      </swiper>
+      <p class="movie-name">{{showMovies[index].nm}}</p>
+    </div>
+
     <div class="tuan-wrap" v-if="snacksData.length>0">
       <div class="gap" style="height: 10px; background-color: #f0f0f0;"></div>
       <div class="tuan-list">
         <div class="tuan-title mb-line-b">影院超值套餐</div>
-        <div class="tuan-item mb-line-b" 
-          v-for="(item,index) in snacksData"
-          :key="index"
-        >
+        <div class="tuan-item mb-line-b" v-for="(item,index) in snacksData" :key="index">
           <img
             data-ui-type="image-viewer"
             src="//p1.meituan.net/440.0/deal/18660aa9cc5cbb609d5d8d206b40617348333.jpg"
           >
 
-          <div
-            class="item-info"
-          >
+          <div class="item-info">
             <div class="title">
               <span v-if="item.recommendPersonNum==2">双人</span>
               <span v-if="item.recommendPersonNum==1">单人</span>
@@ -48,18 +56,38 @@
 </template>
 <script>
 import HeaderTop from "@/components/common/header";
+let vm=null;
 export default {
   data() {
     return {
       title: "",
-      addr:'',
+      addr: "",
       isShow: true,
       cinemaDetailData: {},
-      snacksData:[]
+      snacksData: [],
+      showMovies: [],
+      showMoviesImgs: [],
+      index: 0,
+      swiperOption: {
+        loop: false,
+        speed: 1000,
+        slidesPerView: 4,
+        centeredSlides: true,
+        paginationClickable: true,
+        spaceBetween: 0,
+        on: {
+          slideChange() {
+            vm.index = this.activeIndex;
+          }
+        }
+      }
     };
   },
   components: {
     HeaderTop
+  },
+  created() {
+    vm=this
   },
   methods: {
     getCinemaDetail() {
@@ -70,7 +98,17 @@ export default {
           this.cinemaDetailData = res.data;
           this.title = res.data.cinemaData.nm;
           this.addr = res.data.cinemaData.addr;
-          this.snacksData=res.data.dealList.dealList;
+          this.snacksData = res.data.dealList.dealList;
+          this.showMovies = res.data.showData.movies;
+          let imgs = [];
+          for (let i = 0; i < this.showMovies.length; i++) {
+            imgs.push(
+              this.showMovies[i].img.split("w.h")[0] +
+                "140.208" +
+                this.showMovies[i].img.split("w.h")[1]
+            );
+          }
+          this.showMoviesImgs = imgs;
           console.log(res.data);
         })
         .catch(error => {
@@ -84,7 +122,54 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.cinema-show{
+.slider-wrap-div >>> .swiper-container{
+  padding: 20px 0;
+}
+.slider-wrap-div {
+  position: relative;
+  touch-action: none;
+  height: 200px;
+  padding-top: 10px;
+  overflow: hidden;
+  .movie-name{
+    position: absolute;
+    bottom: 30px;
+    left: 0px;
+    right: 0px;
+    text-align: center;
+    color: #fff;
+    line-height: 24px;
+    font-size: 17px;
+    font-weight: 700;
+  }
+}
+.post-bg-filter{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: #40454d;
+  opacity: .55;
+}
+.bg-slider{
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  filter: blur(30px);
+  background-position-y: 40%;
+}
+.swiper-img {
+  width: 65px;
+  height: 95px;
+}
+.swiper-slide-active .swiper-img {
+  border: 1px solid #f00;
+  box-shadow: 0 0 20px #000;
+}
+.cinema-show {
   position: absolute;
   top: 0px;
   left: 0px;
@@ -92,6 +177,11 @@ export default {
   z-index: 6;
   background: #fff;
   min-height: 100%;
+}
+.tuan-wrap {
+  position: relative;
+  z-index: 2;
+  background: #fff;
 }
 .cinema-info {
   position: relative;

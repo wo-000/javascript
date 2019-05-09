@@ -172,6 +172,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "~@/style/css/common.scss";
+
 .top-tab {
   position: fixed;
   background: #fff;

@@ -17,7 +17,10 @@
         <span class="nav-text">我的</span>
       </div>
     </div>
-    <router-view/>
+    <!-- <transition  name="slide" mode="in-out"> -->
+      <router-view class="child-view"></router-view>
+       <!-- <router-view/> -->
+    <!-- </transition> -->
   </div>
 </template>
 
@@ -78,6 +81,28 @@ export default {
 @import "./style/css/reset.css";
 @import "./style/css/font.css";
 @import "./style/css/common.scss";
+.child-view {  
+  position: absolute;  
+  left: 0;  
+  top: 0;  
+  width: 100%;  
+  height: 100%;  
+  background: #fff;
+  z-index: 1;
+}  
+.slide-enter-active{
+  transition: all 0.3s;
+}
+.slide-enter{
+  transform: translate3d(100%, 0, 0);
+}
+.slide-leave-active{
+  transition: all 0.2s;
+}
+.slide-leave-to{
+  transform: translate3d(100%, 0, 0); 
+}
+
 .mint-indicator-wrapper{
   z-index: 9999 !important;
 }
