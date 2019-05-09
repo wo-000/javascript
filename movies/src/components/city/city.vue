@@ -45,9 +45,9 @@ export default {
     };
   },
   updated() {
-    document.body.style.position='relative'
-     document.body.style.height='auto'
-      document.body.style.overflow='scroll'
+    document.body.style.position = "relative";
+    document.body.style.height = "auto";
+    document.body.style.overflow = "scroll";
   },
   methods: {
     getCityInfo() {
