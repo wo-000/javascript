@@ -124,6 +124,7 @@ export default {
       this.$axios
         .get(`/api/ajax/moreComingList?token=&movieIds=${this.movieIdslist}`)
         .then(res => {
+          // alert(1)
           console.log(res.data);
           this.moviesData = this.moviesData.concat(res.data.coming);
           console.log(this.moviesData, movieIdslistString);
@@ -158,7 +159,7 @@ export default {
     this.getComingMost();
     this.getMoviesInfo();
     console.log(window.screen.height);
-    this.$refs.moviewrap.style.height = window.screen.height - 90 + "px";
+    // this.$refs.moviewrap.style.height = window.screen.height - 90 + "px";
     this.$refs.moviewrap.style.position = "relative";
     this.$refs.moviewrap.style.top = "95px";
   }
@@ -172,7 +173,10 @@ export default {
 
 <style lang="scss" scoped>
 @import "~@/style/css/common.scss";
-
+.movie-list{
+  overflow-y: scroll;
+  height: calc(100% - 80px);
+}
 .top-tab {
   position: fixed;
   background: #fff;
