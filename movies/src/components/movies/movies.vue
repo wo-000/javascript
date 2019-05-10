@@ -159,7 +159,7 @@ export default {
     this.getComingMost();
     this.getMoviesInfo();
     console.log(window.screen.height);
-    // this.$refs.moviewrap.style.height = window.screen.height - 90 + "px";
+    this.$refs.moviewrap.style.height = window.screen.height - 90 + "px";
     this.$refs.moviewrap.style.position = "relative";
     this.$refs.moviewrap.style.top = "95px";
   }
