@@ -89,7 +89,11 @@ export default {
   height: 100%;  
   background: #fff;
   z-index: 1;
-}  
+} 
+.mint-indicator{
+  position: relative !important;
+  z-index: 10 !important;
+} 
 .slide-enter-active{
   transition: all 0.3s;
 }
